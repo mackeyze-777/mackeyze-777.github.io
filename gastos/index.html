@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gastos VAM">
+<meta name="theme-color" content="#111418">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23111418'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%23ffd24a'%3E%24%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23111418'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle' fill='%23ffd24a'%3E%24%3C/text%3E%3C/svg%3E">
+<title>Gastos VAM</title>
+<style>
+  :root{
+    --bg:#0e1115; --card:#171b21; --card2:#1f242c; --line:#2a313b;
+    --txt:#eef2f6; --dim:#8a95a3; --accent:#ffd24a; --accent2:#23c552;
+    --danger:#ff5d5d; --blue:#3aa0ff;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+  .wrap{max-width:520px;margin:0 auto;padding:14px 16px 40px}
+
+  header{display:flex;align-items:center;justify-content:space-between;margin:6px 0 14px}
+  header h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.2px}
+  header h1 small{color:var(--dim);font-weight:500;font-size:12px;display:block;margin-top:2px}
+  .gear{background:var(--card2);border:1px solid var(--line);color:var(--dim);
+    width:40px;height:40px;border-radius:12px;font-size:18px}
+
+  /* segmentado Gasto / Ingreso */
+  .seg{display:flex;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:5px;gap:5px;margin-bottom:16px}
+  .seg button{flex:1;border:0;background:transparent;color:var(--dim);
+    padding:12px;border-radius:10px;font-size:15px;font-weight:600;transition:.15s}
+  .seg button.on[data-k="gasto"]{background:var(--danger);color:#fff}
+  .seg button.on[data-k="ingreso"]{background:var(--accent2);color:#fff}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:16px;margin-bottom:14px}
+  label{display:block;font-size:12px;color:var(--dim);text-transform:uppercase;
+    letter-spacing:.6px;margin:0 0 8px}
+
+  /* monto */
+  .amount{display:flex;align-items:center;gap:8px}
+  .amount .sign{font-size:34px;color:var(--dim);font-weight:300}
+  .amount input{flex:1;background:transparent;border:0;color:var(--txt);
+    font-size:46px;font-weight:700;width:100%;outline:none;padding:0}
+  .amount input::placeholder{color:#3a424d}
+
+  input.txt{width:100%;background:var(--card2);border:1px solid var(--line);
+    color:var(--txt);border-radius:12px;padding:14px;font-size:16px;outline:none}
+  input.txt:focus{border-color:var(--blue)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{background:var(--card2);border:1px solid var(--line);color:var(--txt);
+    padding:11px 13px;border-radius:12px;font-size:14px;font-weight:500;
+    display:flex;align-items:center;gap:6px}
+  .chip.on{background:var(--accent);color:#1a1d22;border-color:var(--accent);font-weight:700}
+  .chips.loading{color:var(--dim);font-size:13px}
+
+  .row2{display:flex;gap:10px}
+  .row2 .field{flex:1}
+
+  .save{position:sticky;bottom:14px;width:100%;border:0;border-radius:16px;
+    padding:18px;font-size:18px;font-weight:700;color:#fff;margin-top:6px;
+    box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .save.gasto{background:var(--danger)}
+  .save.ingreso{background:var(--accent2)}
+  .save:disabled{opacity:.5}
+
+  .recent{margin-top:8px}
+  .recent h3{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;margin:18px 4px 8px}
+  .item{display:flex;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid var(--line)}
+  .item .em{font-size:18px}
+  .item .info{flex:1;min-width:0}
+  .item .info b{font-size:15px;font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item .info span{font-size:12px;color:var(--dim)}
+  .item .amt{font-weight:700;font-size:15px}
+  .item .amt.g{color:var(--danger)} .item .amt.i{color:var(--accent2)}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);
+    background:#fff;color:#111;padding:13px 20px;border-radius:30px;font-weight:600;
+    font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:90%;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast.err{background:var(--danger);color:#fff}
+
+  /* modal config */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;
+    align-items:center;justify-content:center;padding:20px;z-index:60}
+  .modal.show{display:flex}
+  .modal .box{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:20px;max-width:440px;width:100%}
+  .modal h2{margin:0 0 6px;font-size:18px}
+  .modal p{color:var(--dim);font-size:13px;line-height:1.5;margin:0 0 14px}
+  .modal textarea{width:100%;background:var(--card2);border:1px solid var(--line);
+    color:var(--txt);border-radius:12px;padding:12px;font-size:13px;min-height:70px;outline:none}
+  .modal .btns{display:flex;gap:10px;margin-top:14px}
+  .modal .btns button{flex:1;border:0;border-radius:12px;padding:13px;font-weight:600;font-size:15px}
+  .modal .ok{background:var(--accent);color:#1a1d22}
+  .modal .cancel{background:var(--card2);color:var(--txt);border:1px solid var(--line)}
+  .mes-sel{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .mes-sel select{flex:1;background:var(--card2);color:var(--txt);border:1px solid var(--line);
+    border-radius:12px;padding:12px;font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Gastos VAM <small id="mesLbl">cargando…</small></h1>
+    <button class="gear" onclick="openConfig()">⚙︎</button>
+  </header>
+
+  <div class="seg">
+    <button data-k="gasto" class="on" onclick="setTipo('gasto')">− Gasto</button>
+    <button data-k="ingreso" onclick="setTipo('ingreso')">+ Ingreso</button>
+  </div>
+
+  <div class="card">
+    <label>Monto</label>
+    <div class="amount">
+      <span class="sign">$</span>
+      <input id="monto" inputmode="decimal" placeholder="0" autocomplete="off">
+    </div>
+  </div>
+
+  <div class="card">
+    <label id="midLbl">Razón (¿qué fue?)</label>
+    <input id="mid" class="txt" placeholder="Ej: Gasolina" autocomplete="off" list="midSugs">
+    <datalist id="midSugs"></datalist>
+  </div>
+
+  <div class="card">
+    <label id="lastLbl">Categoría</label>
+    <div id="chips" class="chips loading">Cargando categorías…</div>
+    <input id="lastTxt" class="txt" style="display:none;margin-top:4px" placeholder="Cliente" autocomplete="off" list="cliSugs">
+    <datalist id="cliSugs"></datalist>
+  </div>
+
+  <div class="card">
+    <label>Día del mes</label>
+    <div class="row2">
+      <div class="field">
+        <input id="dia" class="txt" inputmode="numeric" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <button id="saveBtn" class="save gasto" onclick="guardar()">Guardar gasto</button>
+
+  <div class="recent" id="recent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Config -->
+<div class="modal" id="cfg">
+  <div class="box">
+    <h2>Configuración</h2>
+    <p>Pega aquí la <b>URL de tu Apps Script</b> (la obtienes al publicar el script como aplicación web; ver instrucciones).</p>
+    <textarea id="urlInput" placeholder="https://script.google.com/macros/s/…/exec"></textarea>
+    <div class="mes-sel" style="margin-top:14px">
+      <label style="margin:0">Mes destino:</label>
+      <select id="mesSel"></select>
+    </div>
+    <div class="btns">
+      <button class="cancel" onclick="closeConfig()">Cancelar</button>
+      <button class="ok" onclick="saveConfig()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MESES=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
+let SCRIPT_URL = localStorage.getItem('vam_url') || '';
+let MES_OVERRIDE = localStorage.getItem('vam_mes') || ''; // '' = mes actual automático
+let tipo='gasto';
+let lists={categorias:[],productos:[],clientes:[]};
+let sel=null; // chip seleccionado
+
+const $ = s=>document.querySelector(s);
+function mesActual(){ return MES_OVERRIDE || MESES[new Date().getMonth()]; }
+
+/* ---------- JSONP ---------- */
+function jsonp(params){
+  return new Promise((resolve,reject)=>{
+    if(!SCRIPT_URL) return reject(new Error('Falta configurar la URL'));
+    const cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*1e4);
+    params.callback=cb;
+    const s=document.createElement('script');
+    const t=setTimeout(()=>{cleanup();reject(new Error('Sin respuesta (revisa la URL/conexión)'));},15000);
+    function cleanup(){try{delete window[cb]}catch(e){window[cb]=undefined} s.remove(); clearTimeout(t);}
+    window[cb]=d=>{cleanup();resolve(d);};
+    s.onerror=()=>{cleanup();reject(new Error('Error de red'));};
+    s.src=SCRIPT_URL+'?'+new URLSearchParams(params).toString();
+    document.body.appendChild(s);
+  });
+}
+
+/* ---------- UI ---------- */
+function setTipo(t){
+  tipo=t; sel=null;
+  document.querySelectorAll('.seg button').forEach(b=>b.classList.toggle('on',b.dataset.k===t));
+  const save=$('#saveBtn');
+  save.className='save '+t;
+  save.textContent = t==='gasto'?'Guardar gasto':'Guardar ingreso';
+  if(t==='gasto'){
+    $('#midLbl').textContent='Razón (¿qué fue?)';
+    $('#mid').placeholder='Ej: Gasolina';
+    $('#lastLbl').textContent='Categoría';
+    $('#lastTxt').style.display='none';
+    fillMidSugs([]);
+  }else{
+    $('#midLbl').textContent='Producto';
+    $('#mid').placeholder='Producto / servicio';
+    $('#lastLbl').textContent='Cliente';
+    $('#lastTxt').style.display='block';
+    fillMidSugs(lists.productos);
+  }
+  renderChips();
+}
+
+function renderChips(){
+  const box=$('#chips');
+  const arr = tipo==='gasto' ? lists.categorias : lists.productos;
+  if(!arr.length){ box.className='chips loading'; box.textContent = SCRIPT_URL?'Sin lista (revisa el menú desplegable en tu hoja)':'Configura la URL para cargar tus categorías ⚙︎'; return; }
+  box.className='chips'; box.innerHTML='';
+  arr.forEach(v=>{
+    const b=document.createElement('button');
+    b.className='chip'+(sel===v?' on':'');
+    b.textContent=v;
+    b.onclick=()=>{ sel=(sel===v?null:v); renderChips(); if(tipo==='ingreso'&&sel) $('#mid').value=sel; };
+    box.appendChild(b);
+  });
+}
+function fillMidSugs(arr){
+  const dl=$('#midSugs'); dl.innerHTML=''; (arr||[]).forEach(v=>{const o=document.createElement('option');o.value=v;dl.appendChild(o);});
+}
+
+async function cargarListas(){
+  $('#mesLbl').textContent='· '+mesActual();
+  if(!SCRIPT_URL){ renderChips(); return; }
+  try{
+    const r=await jsonp({action:'lists', mes:mesActual()});
+    if(r.ok){
+      lists.categorias=r.categorias||[]; lists.productos=r.productos||[]; lists.clientes=r.clientes||[];
+      const dl=$('#cliSugs'); dl.innerHTML=''; lists.clientes.forEach(v=>{const o=document.createElement('option');o.value=v;dl.appendChild(o);});
+      $('#mesLbl').textContent='· '+(r.mes||mesActual());
+    }else{ toast(r.error||'No se pudieron cargar las listas',true); }
+  }catch(e){ toast(e.message,true); }
+  setTipo(tipo);
+}
+
+async function guardar(){
+  const monto=$('#monto').value.trim();
+  if(!monto || isNaN(parseFloat(monto.replace(/,/g,'')))){ toast('Escribe un monto',true); return; }
+  const mid=$('#mid').value.trim();
+  const last = tipo==='gasto' ? (sel||'') : ($('#lastTxt').value.trim()||'');
+  if(tipo==='gasto' && !last){ toast('Elige una categoría',true); return; }
+  const dia=$('#dia').value.trim()||String(new Date().getDate());
+
+  const btn=$('#saveBtn'); btn.disabled=true; const orig=btn.textContent; btn.textContent='Guardando…';
+  try{
+    const r=await jsonp({action:'add', type:tipo, mes:mesActual(),
+      dia, cantidad:monto.replace(/,/g,''), mid, last});
+    if(r.ok){
+      addRecent({tipo,monto:r.cantidad,mid,last,mes:r.mes,dia:r.dia});
+      toast('✓ Guardado en '+r.mes+' (fila '+r.fila+')');
+      $('#monto').value=''; $('#mid').value=''; $('#lastTxt').value=''; sel=null; renderChips();
+      $('#monto').focus();
+    }else{ toast(r.error||'Error al guardar',true); }
+  }catch(e){ toast(e.message,true); }
+  btn.disabled=false; btn.textContent=orig;
+}
+
+/* ---------- recientes (solo visual, guardado local) ---------- */
+function addRecent(o){
+  const log=JSON.parse(localStorage.getItem('vam_log')||'[]');
+  log.unshift({...o,ts:Date.now()}); localStorage.setItem('vam_log',JSON.stringify(log.slice(0,30)));
+  renderRecent();
+}
+function renderRecent(){
+  const log=JSON.parse(localStorage.getItem('vam_log')||'[]');
+  const box=$('#recent');
+  if(!log.length){ box.innerHTML=''; return; }
+  box.innerHTML='<h3>Últimos registros</h3>'+log.slice(0,12).map(o=>{
+    const cls=o.tipo==='gasto'?'g':'i', s=o.tipo==='gasto'?'−':'+';
+    const em=(o.last&&/\p{Emoji}/u.test(o.last))?o.last.match(/\p{Emoji}/u)[0]:(o.tipo==='gasto'?'💸':'💰');
+    const num=Number(o.monto).toLocaleString('es-MX');
+    return `<div class="item"><span class="em">${em}</span>
+      <div class="info"><b>${o.mid||o.last||'—'}</b><span>${o.mes} · día ${o.dia} · ${o.last||''}</span></div>
+      <span class="amt ${cls}">${s}$${num}</span></div>`;
+  }).join('');
+}
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg,err){
+  const el=$('#toast'); el.textContent=msg; el.className='toast show'+(err?' err':'');
+  clearTimeout(toastT); toastT=setTimeout(()=>el.className='toast',2600);
+}
+
+/* ---------- config ---------- */
+function openConfig(){
+  $('#urlInput').value=SCRIPT_URL;
+  const sel=$('#mesSel'); sel.innerHTML='<option value="">Automático (mes actual)</option>'+
+    MESES.map(m=>`<option value="${m}">${m}</option>`).join('');
+  sel.value=MES_OVERRIDE;
+  $('#cfg').classList.add('show');
+}
+function closeConfig(){ $('#cfg').classList.remove('show'); }
+function saveConfig(){
+  SCRIPT_URL=$('#urlInput').value.trim().replace(/\s+/g,'');
+  MES_OVERRIDE=$('#mesSel').value;
+  localStorage.setItem('vam_url',SCRIPT_URL);
+  localStorage.setItem('vam_mes',MES_OVERRIDE);
+  closeConfig(); cargarListas();
+}
+
+/* ---------- init ---------- */
+$('#dia').value=new Date().getDate();
+renderRecent();
+cargarListas();
+if(!SCRIPT_URL) openConfig();
+</script>
+</body>
+</html>

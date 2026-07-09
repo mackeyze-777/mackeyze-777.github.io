@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>VAM Garage — Semana de Capacitación y Tareas del Puesto</title>
+<!-- Por ROLES (sin nombres — el equipo rota). Sistema APEX · imprimible.
+     Objetivo: poner expectativas el Día 1 para que nadie diga "pensé que era otra cosa". jul-2026 -->
+<style>
+:root{--pink:#e8178a;--night:#050505;--ok:#1a7a44;--warn:#a35a00;--bad:#b3261e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:system-ui,-apple-system,sans-serif;padding:20px 10px 60px;-webkit-font-smoothing:antialiased}
+.topbar{max-width:860px;margin:0 auto 14px;display:flex;justify-content:flex-end;gap:8px}
+.btn{min-height:42px;background:var(--pink);border:0;color:#050505;font:inherit;font-size:14px;font-weight:800;padding:0 20px;border-radius:999px;cursor:pointer}
+.sheet{max-width:860px;margin:0 auto;background:#fff;color:#16181d;border-radius:12px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+.band{height:8px;background:var(--pink)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 32px 0}
+.brand{display:flex;gap:13px;align-items:center}
+.mark{width:48px;height:48px;border-radius:10px;background:var(--night);color:var(--pink);display:grid;place-items:center;font-weight:800;font-size:25px}
+.name{font-weight:800;font-size:17px;letter-spacing:4px}
+.subt{font-size:9.5px;color:#8a8d96;letter-spacing:1.8px;text-transform:uppercase;margin-top:3px}
+.doc-t{font-weight:800;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--pink);text-align:right}
+.title{padding:20px 32px 4px}
+.title h1{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.title p{font-size:13px;color:#5a5e66;margin-top:8px;line-height:1.55;max-width:74ch}
+.title p b{color:#16181d}
+.datebar{display:flex;flex-wrap:wrap;gap:10px 26px;padding:14px 32px 0;font-size:12px;color:#5a5e66}
+.datebar label{font-weight:700;color:#16181d}
+.datebar .fill{display:inline-block;min-width:150px;border-bottom:1.6px solid #16181d}
+.datebar input{border:0;border-bottom:1.6px solid #16181d;font:inherit;font-size:12px;padding:2px 4px;min-width:150px;background:transparent}
+.datebar input:focus{outline:none;border-color:var(--pink)}
+
+.sec{display:flex;align-items:center;gap:10px;margin:24px 32px 10px}
+.sec-n{width:24px;height:24px;border-radius:7px;background:var(--pink);color:#fff;font-weight:800;font-size:12.5px;display:grid;place-items:center;flex-shrink:0}
+.sec h2{font-weight:800;font-size:15.5px;text-transform:uppercase;letter-spacing:.5px}
+.sec .hint{font-size:10px;color:#9a9da4;margin-left:auto;text-transform:uppercase;letter-spacing:.3px;text-align:right}
+
+.truth{margin:2px 32px 0;padding:14px 18px;background:#fdeef6;border:1.5px solid var(--pink);border-radius:11px}
+.truth li{list-style:none;padding:5px 0 5px 22px;position:relative;font-size:12.5px;color:#4a2038;line-height:1.5}
+.truth li::before{content:"→";position:absolute;left:0;color:var(--pink);font-weight:800}
+.truth li b{color:#a31368}
+
+.tblwrap{padding:0 32px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f4f5f7;color:#5a5e66;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;padding:8px 9px;border-bottom:1.4px solid #dfe1e5;white-space:nowrap}
+td{padding:9px;border-bottom:1px solid #edeef1;vertical-align:top;line-height:1.45;color:#2c2f36}
+tr:last-child td{border-bottom:0}
+.day{font-weight:800;color:#16181d;white-space:nowrap}
+.day small{display:block;font-weight:600;color:#9a9da4;font-size:9.5px;margin-top:2px}
+.chk{width:34px;text-align:center;color:#c7c9cf;font-size:15px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;padding:4px 32px 0}
+.card{border:1.5px solid #e6e7ea;border-radius:12px;padding:14px 16px}
+.card.do{border-color:#bfe4cc}
+.card.dont{border-color:#f0c9c5}
+.card h3{font-size:13px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.card li{list-style:none;padding:5px 0 5px 20px;position:relative;font-size:12px;color:#3c4046;line-height:1.5}
+.card.do li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+.card.dont li::before{content:"✕";position:absolute;left:0;color:var(--bad);font-weight:800}
+
+.ladder{padding:4px 32px 0;counter-reset:step}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed #e6e7ea}
+.step:last-child{border-bottom:0}
+.step .n{counter-increment:step;flex-shrink:0;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:12px;color:#fff;background:var(--pink)}
+.step .n::before{content:counter(step)}
+.step b{font-size:12.5px;display:block}
+.step span{font-size:11.5px;color:#5a5e66;line-height:1.45;display:block;margin-top:2px}
+
+.note{margin:14px 32px 0;padding:10px 14px;background:#f6f7f9;border:1px solid #e6e7ea;border-radius:9px;font-size:11px;color:#6a6e76;line-height:1.5}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:26px;padding:26px 32px 12px}
+.sg-line{border-bottom:1.5px solid #16181d;height:32px}
+.sign span{font-size:9.5px;color:#777;font-weight:700;display:block;margin-top:7px;text-transform:uppercase;letter-spacing:.5px}
+.foot{padding:12px 32px 24px;border-top:1px solid #eef0f2;margin-top:10px;font-size:9.5px;color:#a2a5ac;line-height:1.5}
+@media print{
+  body{background:#fff;padding:0}
+  .topbar{display:none}
+  .sheet{box-shadow:none;border-radius:0;max-width:none}
+  .band,.mark,.sec-n,.doc-t,.step .n,.truth,.card.do,.card.dont{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{margin:11mm}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><button class="btn" onclick="window.print()">🖨️ Imprimir</button></div>
+<div class="sheet">
+  <div class="band"></div>
+  <div class="head">
+    <div class="brand"><div class="mark">V</div><div><div class="name">VAM GARAGE</div><div class="subt">Estudio automotriz premium · Pachuca</div></div></div>
+    <div class="doc-t">Semana de<br>Capacitación</div>
+  </div>
+  <div class="title">
+    <h1>Tu primera semana y qué vas<br>a hacer aquí — sin sorpresas</h1>
+    <p>Este documento es para el <b>puesto de Técnico de Apoyo</b> (aplica a quien lo ocupe). Léelo el <b>Día 1</b>. Aquí dice, sin rodeos, cómo es el trabajo, qué harás cada día de tu primera semana y cómo se sube de nivel. Si algo de esto no es lo que esperabas, es mejor saberlo hoy.</p>
+  </div>
+  <div class="datebar">
+    <div><label>Puesto:</label> <span class="fill" style="min-width:200px">Técnico de Apoyo</span></div>
+    <div><label>Semana de capacitación:</label> <input type="text" placeholder="del ___ al ___ de _______"></div>
+    <div><label>Encargado de la capacitación:</label> <input type="text" placeholder="rol / cargo"></div>
+  </div>
+
+  <!-- ═══ 0. LA VERDAD DEL PUESTO ═══ -->
+  <div class="sec"><span class="sec-n">0</span><h2>Cómo es realmente este trabajo</h2><span class="hint">Léelo antes de aceptar</span></div>
+  <div class="truth">
+    <li>Es un <b>oficio físico</b>: se está de pie, se lava, se prepara y se detalla con las manos. No es un trabajo de estar sentado.</li>
+    <li>Se <b>empieza por lo básico</b> — lavado técnico y preparación. NO llegas a pulir autos de lujo el primer día; a eso se sube con el tiempo y la certificación.</li>
+    <li>Aquí <b>nadie adivina</b>: cada servicio tiene su proceso escrito paso a paso (SOP) en tu celular. Se sigue el proceso, no el "yo le sé".</li>
+    <li>Se paga por <b>producir bien</b>: base garantizada + <b>$100 por cada trabajo terminado y aprobado</b> por calidad. Mientras más y mejor produces, más ganas.</li>
+    <li>Hay un <b>camino claro para subir</b>: dominas lo básico → subes a trabajos medianos → te certificas → haces los cerámicos, que son los mejor pagados.</li>
+  </div>
+
+  <!-- ═══ 1. LA SEMANA DÍA POR DÍA ═══ -->
+  <div class="sec"><span class="sec-n">1</span><h2>Tu primera semana, día por día</h2><span class="hint">Lunes a viernes · 9:30 a.m.</span></div>
+  <div class="tblwrap"><table>
+    <thead><tr><th class="chk"></th><th>Día</th><th>Qué se hace</th><th>Al terminar el día ya sabes…</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="chk">☐</td>
+        <td class="day">Día 1<small>Bienvenida</small></td>
+        <td>Recorrido del taller. Reglas de la casa (puntualidad 9:30, celular guardado, EPP). Firma de contrato y reglamento. Entrega de equipo de protección. Estudias el SOP de <b>Lavado Técnico</b> en el celular y observas uno real.</td>
+        <td>Dónde está todo, cómo nos comportamos y cómo se ve un lavado bien hecho.</td>
+      </tr>
+      <tr>
+        <td class="chk">☐</td>
+        <td class="day">Día 2<small>Lavado</small></td>
+        <td>Haces <b>Lavado Técnico a dos cubetas</b> siguiendo el SOP, supervisado. Descontaminación básica. Cuidado de llaves y pertenencias del cliente.</td>
+        <td>Lavar sin generar rayones y con el método correcto.</td>
+      </tr>
+      <tr>
+        <td class="chk">☐</td>
+        <td class="day">Día 3<small>Preparación e interiores</small></td>
+        <td>Preparación de vehículos. Interiores: aspirado, limpieza de plásticos y vestiduras (nivel mantenimiento). <b>Sala de Máquinas</b> (motor) básico.</td>
+        <td>Dejar listo un auto para el siguiente proceso y un interior presentable.</td>
+      </tr>
+      <tr>
+        <td class="chk">☐</td>
+        <td class="day">Día 4<small>Apoyo al detalle</small></td>
+        <td>Apoyas al técnico en pulido: enmascarado/cinta y observación. Faros (Visión Nueva). Sello Express (cera + descontaminación). Ruedas y llantas.</td>
+        <td>Cómo se protege y se prepara una superficie antes de pulir o aplicar cerámico.</td>
+      </tr>
+      <tr>
+        <td class="chk">☐</td>
+        <td class="day">Día 5<small>Evaluación</small></td>
+        <td><b>Examen oral</b> del SOP + haces un Lavado Técnico completo tú solo (evaluado). Retroalimentación: qué salió bien, qué mejorar y qué sigue la próxima semana.</td>
+        <td>Si ya dominas la base para avanzar al camino de certificación.</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <div class="note">Un día "cuenta" como aprendido cuando la tarea pasa su <b>Hoja de Control</b>. Equivocarse mientras aprendes es normal; corregir a tiempo es parte del oficio.</div>
+
+  <!-- ═══ 2. TAREAS DEL PUESTO ═══ -->
+  <div class="sec"><span class="sec-n">2</span><h2>Qué vas a hacer una vez dentro</h2><span class="hint">Tus tareas del día a día</span></div>
+  <div class="grid2">
+    <div class="card do">
+      <h3>✅ Sí es tu trabajo</h3>
+      <li>Recibir el auto con fotos de recepción y resguardar llaves y pertenencias.</li>
+      <li>Lavado técnico a dos cubetas y descontaminación.</li>
+      <li>Preparar superficies para pulido/cerámico (limpieza, enmascarado).</li>
+      <li>Interiores: aspirado, plásticos, vestiduras (mantenimiento).</li>
+      <li>Motor (Sala de Máquinas), faros, ruedas y llantas.</li>
+      <li>Apoyar al técnico certificado en pulidos y cerámicos.</li>
+      <li>Orden y limpieza del área; cuidar la herramienta (Rupes, Gyeon) y reportar fallas.</li>
+      <li>Llenar la <b>Hoja de Control</b> de cada trabajo.</li>
+    </div>
+    <div class="card dont">
+      <h3>⛔ Todavía NO (hasta certificarte)</h3>
+      <li>Aplicar cerámicos tú solo — esos los firma el técnico certificado o el dueño.</li>
+      <li>Corrección de pintura de 2 pasos sin supervisión.</li>
+      <li>Entregar un auto al cliente sin pasar la revisión de calidad.</li>
+      <li>Hablar de precios con el cliente — eso se canaliza con el encargado.</li>
+      <li>Mover el vehículo del cliente para algo que no sea el servicio.</li>
+    </div>
+  </div>
+
+  <!-- ═══ 3. CÓMO SE SUBE ═══ -->
+  <div class="sec"><span class="sec-n">3</span><h2>Cómo subes de nivel y de ingreso</h2><span class="hint">Camino de certificación</span></div>
+  <div class="ladder">
+    <div class="step"><span class="n"></span><div><b>Semana 1 — Base</b><span>Esta semana: lavado, preparación e interiores. Al final, examen y práctica evaluada.</span></div></div>
+    <div class="step"><span class="n"></span><div><b>Semanas 2-3 — Trabajos medianos supervisados</b><span>Efecto Showroom, interiores a fondo, faros. Empiezas a ganar tu bono de $100 por trabajo aprobado.</span></div></div>
+    <div class="step"><span class="n"></span><div><b>Semana 4 — Certificación</b><span>Examen final + un servicio completo sin correcciones. Al certificarte: bono de certificación y subes de nivel e ingreso.</span></div></div>
+    <div class="step"><span class="n"></span><div><b>Técnico certificado</b><span>Ya ejecutas cerámicos (el trabajo mejor pagado) y firmas la Hoja de Control. El techo lo pones tú.</span></div></div>
+  </div>
+  <div class="note">El detalle completo de cada servicio (fases y tiempos) vive en el <b>Manual de Operaciones (SOPs)</b> en tu celular. El esquema de bonos y responsabilidades está en el <b>Esquema del Equipo</b>.</div>
+
+  <div class="sign">
+    <div><div class="sg-line"></div><span>Técnico — nombre y firma de enterado</span></div>
+    <div><div class="sg-line"></div><span>Encargado de la capacitación</span></div>
+  </div>
+  <div class="foot">VAM Garage · Pachuca, Hidalgo · Documento interno por roles · jul-2026 · Complementa el Contrato Individual, el Reglamento Interior, el Esquema del Equipo y el Manual de Operaciones (SOPs).</div>
+</div>
+</body>
+</html>

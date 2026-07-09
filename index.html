@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Centro de Control · VAM Garage</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e8178a'/><text x='50' y='72' font-size='64' font-family='system-ui' font-weight='900' text-anchor='middle' fill='%23050505'>V</text></svg>">
+<style>
+:root{
+  --bg:#050505; --panel:#0c0c0c; --panel2:#131313;
+  --line:#1e1e1e; --line2:#2c2c2c;
+  --txt:#f0f0f0; --muted:#808490;
+  --accent:#e8178a; --accent2:#ff4fae;
+  --green:#27c76f; --amber:#f0a500; --wa:#25d366;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+header{position:sticky;top:0;z-index:50;background:rgba(5,5,5,.86);backdrop-filter:blur(12px);border-top:3px solid var(--accent);border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;gap:14px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:1px;font-size:15px}
+.logo .tile{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#050505;font-weight:900;font-size:18px}
+.logo small{color:var(--muted);font-weight:600;letter-spacing:2px;font-size:10px;text-transform:uppercase;display:block}
+.search{margin-left:auto;position:relative;flex:1;max-width:320px}
+.search input{width:100%;background:var(--panel2);border:1px solid var(--line2);color:var(--txt);border-radius:10px;padding:9px 12px 9px 34px;font-size:14px;font-family:inherit;outline:none}
+.search input:focus{border-color:var(--accent)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:.5}
+
+.hero{position:relative;padding:54px 0 30px;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:640px;height:340px;background:radial-gradient(closest-side,rgba(232,23,138,.20),transparent 70%);pointer-events:none}
+.eyebrow{color:var(--accent2);font-weight:700;letter-spacing:3px;text-transform:uppercase;font-size:11px;margin-bottom:14px}
+.hero h1{font-size:clamp(30px,5.4vw,50px);line-height:1.05;font-weight:900;letter-spacing:-.5px}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);max-width:640px;margin-top:14px;font-size:16px}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:96px}
+.stat b{display:block;font-size:24px;font-weight:900;color:var(--txt)}
+.stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:34px 0 8px;position:sticky;top:63px;z-index:40;background:linear-gradient(var(--bg),var(--bg) 70%,transparent);padding:12px 0}
+.pill{font-size:12.5px;font-weight:600;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;transition:.15s}
+.pill:hover{color:var(--txt);border-color:var(--line2)}
+
+section{margin-top:38px;scroll-margin-top:130px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.sec-head h2{font-size:19px;font-weight:800;letter-spacing:.2px}
+.sec-head .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none;align-self:center}
+.sec-head .count{margin-left:auto;color:var(--muted);font-size:12px;font-weight:600}
+.sec-sub{color:var(--muted);font-size:13px;margin-top:-8px;margin-bottom:16px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{position:relative;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;transition:.16s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px);background:var(--panel2)}
+.cardlink{position:absolute;inset:0;z-index:1;border-radius:14px}
+.card>*:not(.cardlink){position:relative;z-index:2;pointer-events:none}
+.card .foot a{pointer-events:auto}
+.card .top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ico{width:42px;height:42px;border-radius:11px;background:var(--panel2);border:1px solid var(--line2);display:grid;place-items:center;font-size:21px;flex:none}
+.card:hover .ico{border-color:var(--accent)}
+.card h3{font-size:15.5px;font-weight:700}
+.card .url{font-size:11px;color:var(--muted);word-break:break-all}
+.card p{color:var(--muted);font-size:13.5px;flex:1}
+.card .foot{display:flex;align-items:center;gap:10px;margin-top:14px}
+.badge{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:3px 8px;border-radius:6px}
+.b-live{background:rgba(39,199,111,.14);color:var(--green);border:1px solid rgba(39,199,111,.3)}
+.b-tool{background:rgba(240,165,0,.14);color:var(--amber);border:1px solid rgba(240,165,0,.3)}
+.b-web{background:rgba(232,23,138,.14);color:var(--accent2);border:1px solid rgba(232,23,138,.3)}
+.b-doc{background:rgba(128,132,144,.14);color:var(--muted);border:1px solid rgba(128,132,144,.3)}
+.card .go{margin-left:auto;color:var(--accent2);font-weight:700;font-size:13px}
+.card:hover .go{color:var(--accent)}
+.repo{font-size:11px;color:var(--muted);opacity:.7}
+.repo:hover{color:var(--accent2);opacity:1;text-decoration:underline}
+
+.noresult{display:none;color:var(--muted);text-align:center;padding:40px;font-size:14px}
+footer{margin:60px 0 40px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+footer b{color:var(--txt)}
+@media(max-width:560px){.search{max-width:150px}.logo small{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hbar">
+    <a class="logo" href="#top"><span class="tile">V</span><span>VAM GARAGE<small>Centro de Control</small></span></a>
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Buscar app, herramienta o documento…" autocomplete="off">
+    </div>
+  </div>
+</header>
+
+<a id="top"></a>
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Todo el sistema en un solo lugar</div>
+    <h1>Centro de Control<br><span>VAM Garage</span></h1>
+    <p>Cada aplicación, cotizador, herramienta, documento y el sitio web — publicados y listos para abrir desde aquí. Esta es la puerta de entrada a todo lo que hemos construido.</p>
+    <div class="stats">
+      <div class="stat"><b>11</b><span>Apps en vivo</span></div>
+      <div class="stat"><b>7</b><span>Páginas web</span></div>
+      <div class="stat"><b>6</b><span>Herramientas</span></div>
+      <div class="stat"><b>6</b><span>Documentos</span></div>
+      <div class="stat"><b>$0</b><span>Costo / mes</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="pills" id="pills">
+    <a class="pill" href="#operacion">🔧 Operación diaria</a>
+    <a class="pill" href="#ventas">💰 Ventas y negocio</a>
+    <a class="pill" href="#rh">📋 Equipo y legal</a>
+    <a class="pill" href="#web">🌐 Sitio web público</a>
+    <a class="pill" href="#herramientas">🧰 Herramientas</a>
+    <a class="pill" href="#docs">📄 Documentos</a>
+  </div>
+
+  <!-- OPERACIÓN DIARIA -->
+  <section id="operacion">
+    <div class="sec-head"><span class="dot"></span><h2>Operación diaria</h2><span class="count">7 apps</span></div>
+    <div class="sec-sub">Lo que el taller usa cada día: citas, recepción, cotizaciones, recibos, tablero del equipo y gastos.</div>
+    <div class="grid">
+
+      <div class="card" data-tags="citas agenda calendario google sheets whatsapp confirmar">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-citas/" target="_blank" aria-label="Abrir Citas"></a>
+        <div class="top"><div class="ico">📅</div><div><h3>Citas</h3><div class="url">vam-garage-citas</div></div></div>
+        <p>Agenda citas → se guardan en Google Sheets + Calendario. Hoy / Mañana / Próximas, confirmación por WhatsApp.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-citas" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="recepcion entrega garantia certificado ceramico fotos daños gasolina recordatorio mantenimiento">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-recepcion/" target="_blank" aria-label="Abrir Recepción y Entrega"></a>
+        <div class="top"><div class="ico">🚗</div><div><h3>Recepción y Entrega</h3><div class="url">vam-garage-recepcion</div></div></div>
+        <p>Hoja de recepción con fotos y daños, hoja de entrega, certificado de garantía cerámico y recordatorio de mantenimiento en Calendar.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-recepcion" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="presupuestos cotizacion cotizador precios imagen whatsapp descuentos ppf epico">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-presupuestos/" target="_blank" aria-label="Abrir Presupuestos"></a>
+        <div class="top"><div class="ico">🧾</div><div><h3>Presupuestos · Cotizador</h3><div class="url">vam-garage-presupuestos</div></div></div>
+        <p>Selecciona servicios (precios en vivo de la hoja) → genera la cotización como imagen y la manda por WhatsApp. Descuentos y nombres épicos.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-presupuestos" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="recibos anticipos abonos liquidacion saldo imagen whatsapp">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-recibos/" target="_blank" aria-label="Abrir Recibos"></a>
+        <div class="top"><div class="ico">💵</div><div><h3>Recibos y Anticipos</h3><div class="url">vam-garage-recibos</div></div></div>
+        <p>Anticipo / abono / liquidación → calcula el saldo pendiente y genera el recibo como imagen para el cliente.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-recibos" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="tablero taller equipo hoy mañana agenda sop entrega read-only">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-taller/" target="_blank" aria-label="Abrir Tablero del Taller"></a>
+        <div class="top"><div class="ico">🛠️</div><div><h3>Tablero del Taller</h3><div class="url">vam-garage-taller</div></div></div>
+        <p>Para el equipo: HOY y MAÑANA desde la agenda viva — carro, servicio, hora de entrada y de entrega, botón al SOP. Sin teléfonos.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-taller" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="recompra crm clientes vencidos reactivacion recontacto whatsapp">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-recompra/" target="_blank" aria-label="Abrir Recompra"></a>
+        <div class="top"><div class="ico">🔁</div><div><h3>Recompra · CRM</h3><div class="url">vam-garage-recompra</div></div></div>
+        <p>Lee las citas en vivo, detecta clientes vencidos por servicio y arma el mensaje de reactivación por WhatsApp.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-recompra" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="gastos gastos vam finanzas control mensual">
+        <a class="cardlink" href="gastos/index.html" target="_blank" aria-label="Abrir Gastos VAM"></a>
+        <div class="top"><div class="ico">📉</div><div><h3>Gastos VAM</h3><div class="url">/gastos</div></div></div>
+        <p>Control de gastos del taller por mes. (App que estaba solo en tu compu — ahora publicada aquí.)</p>
+        <div class="foot"><span class="badge b-live">Publicada</span><span class="go">Abrir →</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- VENTAS Y NEGOCIO -->
+  <section id="ventas">
+    <div class="sec-head"><span class="dot"></span><h2>Ventas y negocio</h2><span class="count">3 apps</span></div>
+    <div class="sec-sub">Estrategia, precios y la radiografía completa del negocio.</div>
+    <div class="grid">
+
+      <div class="card" data-tags="playbook ventas ofertas grand slam upsells mensajes whatsapp inteligencia kpi">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-playbook/" target="_blank" aria-label="Abrir Playbook"></a>
+        <div class="top"><div class="ico">🏆</div><div><h3>Playbook de Ventas</h3><div class="url">vam-garage-playbook</div></div></div>
+        <p>7 ofertas Grand Slam con nombres épicos, máquina de upsells, ~50 mensajes de WhatsApp con buscador e inteligencia de negocio.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-playbook" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="costos dashboard precios hoja costeo overhead pnl fuente unica">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-costos/" target="_blank" aria-label="Abrir Dashboard de Costos"></a>
+        <div class="top"><div class="ico">📊</div><div><h3>Dashboard de Costos</h3><div class="url">vam-garage-costos</div></div></div>
+        <p>Lee la Google Sheet de costeo en vivo — la fuente única de precios de todo el sistema.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-costos" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="mapa sistema radiografia pipeline dinero fallas backlog cuellos">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-mapa/" target="_blank" aria-label="Abrir Mapa del Sistema"></a>
+        <div class="top"><div class="ico">🗺️</div><div><h3>Mapa del Sistema</h3><div class="url">vam-garage-mapa</div></div></div>
+        <p>Radiografía visual: pipeline del dinero, mapa de datos, cuellos de botella rankeados, fallas y backlog de mejoras.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-mapa" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EQUIPO Y LEGAL -->
+  <section id="rh">
+    <div class="sec-head"><span class="dot"></span><h2>Equipo y legal</h2><span class="count">2 apps</span></div>
+    <div class="sec-sub">Procesos del taller y documentos de recursos humanos.</div>
+    <div class="grid">
+
+      <div class="card" data-tags="sops manual operaciones servicios fases tiempos reglas seguridad tecnico">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-sops/" target="_blank" aria-label="Abrir Manual de Operaciones"></a>
+        <div class="top"><div class="ico">📖</div><div><h3>Manual de Operaciones · SOPs</h3><div class="url">vam-garage-sops</div></div></div>
+        <p>16 servicios reales por fases y tiempos, reglas del taller y seguridad. Hoja de control imprimible, delegación y certificación.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-sops" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="contratos reglamento interior contrato individual lft rh legal imprimir pdf">
+        <a class="cardlink" href="https://mackeyze-777.github.io/vam-garage-contratos/" target="_blank" aria-label="Abrir Reglamento y Contratos"></a>
+        <div class="top"><div class="ico">⚖️</div><div><h3>Reglamento y Contratos</h3><div class="url">vam-garage-contratos</div></div></div>
+        <p>Genera el Reglamento Interior y el Contrato Individual (borradores base LFT). Llena datos e imprime / guarda PDF para firmar.</p>
+        <div class="foot"><span class="badge b-live">En vivo</span><a class="repo" href="https://github.com/mackeyze-777/vam-garage-contratos" target="_blank">código ↗</a><span class="go">Abrir →</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SITIO WEB -->
+  <section id="web">
+    <div class="sec-head"><span class="dot"></span><h2>Sitio web público</h2><span class="count">dltstudio.com</span></div>
+    <div class="sec-sub">El sitio que ven tus clientes — cada página de servicio y el cotizador público.</div>
+    <div class="grid">
+
+      <div class="card" data-tags="sitio web dlt studio home principal dltstudio detailing wrapping">
+        <a class="cardlink" href="https://dltstudio.com/" target="_blank" aria-label="Abrir sitio principal"></a>
+        <div class="top"><div class="ico">🌐</div><div><h3>Sitio principal</h3><div class="url">dltstudio.com</div></div></div>
+        <p>DLT STUDIO · Detailing y Car Wrapping. Portada con precios reales, reseñas Google y galería del taller.</p>
+        <div class="foot"><span class="badge b-web">Público</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="cotizador publico web cliente whatsapp sheet">
+        <a class="cardlink" href="https://dltstudio.com/cotizador/" target="_blank" aria-label="Abrir cotizador público"></a>
+        <div class="top"><div class="ico">🧮</div><div><h3>Cotizador público</h3><div class="url">dltstudio.com/cotizador</div></div></div>
+        <p>Cotizador para el cliente (misma hoja en vivo) que arma la solicitud y la envía por WhatsApp.</p>
+        <div class="foot"><span class="badge b-web">Público</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="correccion pintura pulido pachuca pagina servicio">
+        <a class="cardlink" href="https://dltstudio.com/correccion-de-pintura-pachuca/" target="_blank" aria-label="Abrir Corrección de pintura"></a>
+        <div class="top"><div class="ico">✨</div><div><h3>Corrección de pintura</h3><div class="url">/correccion-de-pintura-pachuca</div></div></div>
+        <p>Página de servicio de pulido / corrección de pintura.</p>
+        <div class="foot"><span class="badge b-web">Público</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="ppf paint protection film pelicula proteccion pachuca">
+        <a class="cardlink" href="https://dltstudio.com/ppf-pachuca/" target="_blank" aria-label="Abrir PPF"></a>
+        <div class="top"><div class="ico">🛡️</div><div><h3>PPF · Película de protección</h3><div class="url">/ppf-pachuca</div></div></div>
+        <p>Página de servicio de Paint Protection Film.</p>
+        <div class="foot"><span class="badge b-web">Público</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="wrap vinil vinilo envoltura color pachuca">
+        <a class="cardlink" href="https://dltstudio.com/wrap-vinil-autos-pachuca/" target="_blank" aria-label="Abrir Wrap / Vinil"></a>
+        <div class="top"><div class="ico">🎨</div><div><h3>Wrap / Vinil</h3><div class="url">/wrap-vinil-autos-pachuca</div></div></div>
+        <p>Página de servicio de wrap y vinil automotriz.</p>
+        <div class="foot"><span class="badge b-web">Público</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="recubrimiento ceramico ceramic coating pachuca">
+        <a class="cardlink" href="https://dltstudio.com/recubrimiento-ceramico-pachuca/" target="_blank" aria-label="Abrir Recubrimiento cerámico"></a>
+        <div class="top"><div class="ico">💎</div><div><h3>Recubrimiento cerámico</h3><div class="url">/recubrimiento-ceramico-pachuca</div></div></div>
+        <p>Página de servicio de recubrimiento cerámico.</p>
+        <div class="foot"><span class="badge b-web">Público</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="detailing interior limpieza tapiceria pachuca">
+        <a class="cardlink" href="https://dltstudio.com/detailing-interior-pachuca/" target="_blank" aria-label="Abrir Detailing interior"></a>
+        <div class="top"><div class="ico">🧽</div><div><h3>Detailing interior</h3><div class="url">/detailing-interior-pachuca</div></div></div>
+        <p>Página de servicio de detailing y limpieza de interiores.</p>
+        <div class="foot"><span class="badge b-web">Público</span><span class="go">Abrir →</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HERRAMIENTAS -->
+  <section id="herramientas">
+    <div class="sec-head"><span class="dot"></span><h2>Herramientas</h2><span class="count">6 herramientas</span></div>
+    <div class="sec-sub">Herramientas de taller que antes solo existían en tu computadora — ahora publicadas aquí.</div>
+    <div class="grid">
+
+      <div class="card" data-tags="diluciones quimicos autofinish tabla etiquetas botes">
+        <a class="cardlink" href="herramientas/diluciones.html" target="_blank" aria-label="Abrir Tabla de Diluciones"></a>
+        <div class="top"><div class="ico">🧪</div><div><h3>Tabla de Diluciones</h3><div class="url">/herramientas/diluciones</div></div></div>
+        <p>Diluciones de químicos Autofinish, con dos vistas (tabla y etiquetas para botes de 500ml y 1L). Imprimible.</p>
+        <div class="foot"><span class="badge b-tool">Herramienta</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="esquema equipo bonos roles pago certificacion metas">
+        <a class="cardlink" href="herramientas/esquema-equipo.html" target="_blank" aria-label="Abrir Esquema del Equipo"></a>
+        <div class="top"><div class="ico">👥</div><div><h3>Esquema del Equipo</h3><div class="url">/herramientas/esquema-equipo</div></div></div>
+        <p>Esquema por roles: clasificación de servicios, bonos ($100 flat), escalera de responsabilidad y garantías. Imprimible.</p>
+        <div class="foot"><span class="badge b-tool">Herramienta</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="semana capacitacion tareas puesto certificacion onboarding induccion equipo">
+        <a class="cardlink" href="herramientas/semana-capacitacion.html" target="_blank" aria-label="Abrir Semana de Capacitación"></a>
+        <div class="top"><div class="ico">🎓</div><div><h3>Semana de Capacitación</h3><div class="url">/herramientas/semana-capacitacion</div></div></div>
+        <p>Onboarding por roles: la verdad del puesto, semana 1 día por día, qué SÍ/NO es tu trabajo y camino de certificación de 4 semanas. Imprimible.</p>
+        <div class="foot"><span class="badge b-tool">Herramienta</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="portada qr sops tablero imprimir codigos">
+        <a class="cardlink" href="herramientas/portada-qr.html" target="_blank" aria-label="Abrir Portada QR"></a>
+        <div class="top"><div class="ico">🔳</div><div><h3>Portada QR (SOPs + Tablero)</h3><div class="url">/herramientas/portada-qr</div></div></div>
+        <p>Portada imprimible con códigos QR al Manual de Operaciones y al Tablero del Taller.</p>
+        <div class="foot"><span class="badge b-tool">Herramienta</span><span class="go">Abrir →</span></div>
+      </div>
+
+      <div class="card" data-tags="dashboard costos viejo standalone overhead pnl tiempos referencia">
+        <a class="cardlink" href="herramientas/dashboard-costos-viejo.html" target="_blank" aria-label="Abrir Dashboard Costos versión vieja"></a>
+        <div class="top"><div class="ico">🗂️</div><div><h3>Dashboard Costos (versión vieja)</h3><div class="url">/herramientas/dashboard-costos-viejo</div></div></div>
+        <p>Versión standalone anterior — reemplazada por la online, pero conserva datos de costeo (overhead, P&L, tiempos). Referencia.</p>
+        <div class="foot"><span class="badge b-doc">Referencia</span><span class="go">Abrir →</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DOCUMENTOS -->
+  <section id="docs">
+    <div class="sec-head"><span class="dot"></span><h2>Documentos</h2><span class="count">6 documentos</span></div>
+    <div class="sec-sub">Documentación maestra del sistema, renderizada para leer online.</div>
+    <div class="grid">
+
+      <div class="card" data-tags="sistema completo resumen apps datos importantes">
+        <a class="cardlink" href="docs/#sistema" target="_blank" aria-label="Leer Sistema completo"></a>
+        <div class="top"><div class="ico">📘</div><div><h3>Sistema completo (resumen)</h3><div class="url">/docs · sistema</div></div></div>
+        <p>El resumen maestro: todas las apps, datos importantes, hoja de citas, calendario y backend.</p>
+        <div class="foot"><span class="badge b-doc">Documento</span><span class="go">Leer →</span></div>
+      </div>
+
+      <div class="card" data-tags="cotizador logica servicios matriz reglas wizard 48">
+        <a class="cardlink" href="docs/#cotizador-logica" target="_blank" aria-label="Leer Lógica del Cotizador"></a>
+        <div class="top"><div class="ico">🧩</div><div><h3>Lógica del Cotizador</h3><div class="url">/docs · cotizador-logica</div></div></div>
+        <p>Matriz de 48 servicios, reglas IF/THEN, pipeline de taller, wizard de 5 pasos y upsells.</p>
+        <div class="foot"><span class="badge b-doc">Documento</span><span class="go">Leer →</span></div>
+      </div>
+
+      <div class="card" data-tags="vacante tecnico apoyo rh contratacion">
+        <a class="cardlink" href="docs/#vacante-tecnico" target="_blank" aria-label="Leer Vacante Técnico"></a>
+        <div class="top"><div class="ico">📝</div><div><h3>Vacante · Técnico de apoyo</h3><div class="url">/docs · vacante-tecnico</div></div></div>
+        <p>Descripción de la vacante lista para publicar (el puesto rota).</p>
+        <div class="foot"><span class="badge b-doc">Documento</span><span class="go">Leer →</span></div>
+      </div>
+
+      <div class="card" data-tags="plan contenido marketing redes sintetizado">
+        <a class="cardlink" href="docs/#plan-contenido" target="_blank" aria-label="Leer Plan de Contenido"></a>
+        <div class="top"><div class="ico">📣</div><div><h3>Plan de Contenido</h3><div class="url">/docs · plan-contenido</div></div></div>
+        <p>Plan de contenido sintetizado para redes.</p>
+        <div class="foot"><span class="badge b-doc">Documento</span><span class="go">Leer →</span></div>
+      </div>
+
+      <div class="card" data-tags="blueprint vamos cool estrategia">
+        <a class="cardlink" href="docs/#blueprint" target="_blank" aria-label="Leer Blueprint"></a>
+        <div class="top"><div class="ico">🧠</div><div><h3>Blueprint</h3><div class="url">/docs · blueprint</div></div></div>
+        <p>Documento de blueprint estratégico del negocio.</p>
+        <div class="foot"><span class="badge b-doc">Documento</span><span class="go">Leer →</span></div>
+      </div>
+
+      <div class="card" data-tags="costos contexto overhead costeo dashboard">
+        <a class="cardlink" href="docs/#costos-contexto" target="_blank" aria-label="Leer Contexto de Costos"></a>
+        <div class="top"><div class="ico">💼</div><div><h3>Contexto de Costos</h3><div class="url">/docs · costos-contexto</div></div></div>
+        <p>Notas de contexto del dashboard de costos (overhead, costeo, tiempos).</p>
+        <div class="foot"><span class="badge b-doc">Documento</span><span class="go">Leer →</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="noresult" id="noresult">Sin resultados para tu búsqueda.</div>
+
+  <footer>
+    <span><b>VAM Garage</b> · Centro de Control</span>
+    <span>Hosting: GitHub Pages · $0/mes</span>
+    <span>Contacto: 771 802 1389</span>
+    <span style="margin-left:auto;opacity:.6">Privado (noindex) · Actualizado 2026</span>
+  </footer>
+</div>
+
+<script>
+const q=document.getElementById('q'), cards=[...document.querySelectorAll('.card')], secs=[...document.querySelectorAll('section')], nr=document.getElementById('noresult');
+q.addEventListener('input',()=>{
+  const t=q.value.trim().toLowerCase();
+  let any=false;
+  cards.forEach(c=>{
+    const hay=(c.dataset.tags+' '+c.textContent).toLowerCase();
+    const show=!t||hay.includes(t);
+    c.style.display=show?'':'none';
+    if(show)any=true;
+  });
+  secs.forEach(s=>{
+    const vis=[...s.querySelectorAll('.card')].some(c=>c.style.display!=='none');
+    s.style.display=vis?'':'none';
+  });
+  document.getElementById('pills').style.display=t?'none':'';
+  nr.style.display=any?'none':'block';
+});
+</script>
+</body>
+</html>

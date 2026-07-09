@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
+<title>VAM Garage — Diluciones</title>
+<!-- Sistema APEX VAM: system-ui, acento rosa #e8178a, franja superior rosa.
+     FUENTE ÚNICA: el objeto DILU alimenta las dos vistas (Tabla y Etiquetas). -->
+<style>
+:root{
+  --night:#050505; --surface:#0c0c0c; --line:#1e1e1e; --pink:#e8178a;
+  --text:#f0f0f0; --muted:#808490; --ok:#27c76f; --warn:#f0a500;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#141416;color:var(--text);font-family:system-ui,-apple-system,sans-serif;line-height:1.5;padding:22px 12px 60px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto}
+
+/* Barra superior + toggle de vista */
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tab{min-height:38px;background:transparent;border:0;color:var(--muted);font:inherit;font-size:14px;font-weight:700;padding:0 18px;border-radius:999px;cursor:pointer;transition:.15s}
+.tab.on{background:var(--pink);color:#050505}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:42px;background:var(--surface);border:1px solid var(--line);color:var(--text);font:inherit;font-size:14px;font-weight:600;padding:0 18px;border-radius:999px;cursor:pointer;transition:background .15s,transform .1s}
+.btn:hover{background:#181818}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--pink);color:#050505;border-color:var(--pink)}
+
+/* ===================== VISTA TABLA (hoja blanca imprimible) ===================== */
+.sheet{background:#fff;color:#16181d;border-radius:12px;overflow:hidden;box-shadow:0 34px 90px -26px rgba(0,0,0,.85)}
+.band{height:6px;background:var(--pink)}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:20px 26px 14px}
+.brand{display:flex;gap:13px;align-items:center}
+.mark{width:44px;height:44px;border-radius:9px;background:#050505;color:var(--pink);display:grid;place-items:center;font-weight:800;font-size:23px}
+.name{font-weight:800;font-size:16px;letter-spacing:4px}
+.subt{font-size:9px;color:#8a8d96;letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.doc{text-align:right}
+.doc-t{font-weight:800;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--pink)}
+.doc-s{font-size:9px;color:#8a8d96;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
+
+.legend{margin:4px 26px 0;padding:12px 16px;background:#fdeef6;border:1px solid var(--pink);border-radius:9px}
+.legend b{color:#a31368}
+.legend p{font-size:12.5px;color:#4a2038;line-height:1.5}
+.legend .mini{margin-top:8px;font-size:11.5px;color:#7a3159}
+.legend code{background:#fff;border:1px solid #f0c3dc;border-radius:5px;padding:1px 6px;font-family:ui-monospace,Menlo,monospace;color:#a31368;font-weight:700}
+
+.sec-h{display:flex;align-items:center;gap:10px;margin:20px 26px 8px}
+.sec-n{width:22px;height:22px;border-radius:6px;background:var(--pink);color:#fff;font-weight:800;font-size:12px;display:grid;place-items:center;flex-shrink:0}
+.sec-h h3{font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+.sec-h .hint{font-size:10px;color:#9a9da4;margin-left:auto;text-transform:uppercase;letter-spacing:.3px}
+
+.tbl-scroll{overflow-x:auto;margin:0 26px}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:660px}
+th{background:#f4f5f7;color:#5a5e66;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:800;padding:8px 9px;border-bottom:1.4px solid #dfe1e5;white-space:nowrap}
+td{padding:8px 9px;border-bottom:1px solid #edeef1;vertical-align:top;line-height:1.35}
+tr:last-child td{border-bottom:0}
+.prod{font-weight:700;color:#16181d;white-space:nowrap}
+.dil{font-weight:800;color:#a31368;white-space:nowrap}
+.mix{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#2c2f36;white-space:nowrap}
+.note-c{color:#6a6e76;font-size:11px}
+.rtu{display:inline-block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#1a7a44;background:#e6f6ec;border:1px solid #b9e6c9;padding:3px 8px;border-radius:5px}
+tr.q td{background:#fffdf7}
+.qtag{display:inline-block;font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#a35a00;background:#fdf1e0;border:1px solid #f0d6a8;padding:2px 6px;border-radius:5px;margin-left:6px}
+
+.foot-note{margin:16px 26px 0;padding:11px 14px;background:#f6f7f9;border:1px solid #e6e7ea;border-radius:8px;font-size:11px;color:#6a6e76;line-height:1.5}
+.sh-foot{margin-top:10px;padding:11px 26px 22px;border-top:1px solid #eef0f2;font-size:9.5px;color:#a2a5ac;line-height:1.5}
+
+/* ===================== VISTA ETIQUETAS (negro APEX) ===================== */
+.grid{display:grid;grid-template-columns:repeat(2,88mm);gap:8mm;justify-content:center}
+.label{width:88mm;height:57mm;background:var(--night);border-radius:4mm;overflow:hidden;display:flex;flex-direction:column;border:1px dashed #333;color:#f4f4f5;break-inside:avoid;page-break-inside:avoid}
+.label .lband{height:5mm;background:var(--pink)}
+.lbody{flex:1;display:flex;flex-direction:column;padding:3.2mm 4mm 2.4mm}
+.lhead{display:flex;justify-content:space-between;align-items:flex-start;gap:3mm}
+.pname{font-weight:800;font-size:14px;line-height:1.12;color:#fff}
+.puse{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:1.2mm}
+.badge{flex-shrink:0;font-size:7.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:#050505;background:var(--warn);padding:2px 6px;border-radius:4px}
+.lmid{display:flex;align-items:center;gap:3.5mm;margin-top:auto}
+.ldil{font-weight:800;font-size:26px;letter-spacing:-.5px;color:var(--pink);line-height:1;white-space:nowrap;flex-shrink:0}
+.ldil small{font-size:11px;font-weight:700;color:#c94e97}
+.receta{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:#d8d8dc;line-height:1.55}
+.receta .vol{display:inline-block;min-width:8mm;color:var(--pink);font-weight:700}
+.receta b{color:#fff;font-weight:600}
+.rtu-tag{font-weight:800;font-size:14px;color:var(--ok);letter-spacing:.5px;border:1.6px solid var(--ok);border-radius:2mm;padding:1.4mm 3mm;white-space:nowrap;flex-shrink:0}
+.rtu-txt{font-size:10px;color:#bdbdc2;line-height:1.4}
+.lfoot{display:flex;justify-content:space-between;align-items:center;gap:3mm;margin-top:2mm;padding-top:2mm;border-top:1px solid #1c1c1c}
+.safety{font-size:8.5px;color:var(--muted);line-height:1.3;flex:1}
+.lmark{display:flex;align-items:center;gap:1.6mm;flex-shrink:0}
+.mv{width:6.5mm;height:6.5mm;border-radius:1.6mm;background:var(--pink);color:#050505;display:grid;place-items:center;font-weight:800;font-size:11px}
+.mtxt{font-weight:800;font-size:8px;letter-spacing:1px;color:#cfcfd4}
+
+/* Alternancia de vistas */
+body.mode-etiq .view-tabla{display:none}
+body.mode-tabla .view-etiq{display:none}
+.etiq-hint{max-width:960px;margin:0 auto 14px;font-size:12px;color:var(--muted);line-height:1.55}
+
+@media print{
+  body{background:#fff;padding:0}
+  .topbar,.etiq-hint{display:none}
+  .sheet{box-shadow:none;border-radius:0}
+  .band,.mark,.sec-n,.doc-t,.legend,.rtu,.qtag{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tbl-scroll{overflow:visible}
+  table{min-width:0;font-size:10.5px}
+  .grid{gap:6mm}
+  .label,.lband,.ldil,.badge,.mv,.rtu-tag{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .label{border:1px dashed #bbb}
+  @page{margin:10mm;size:portrait}
+}
+@media(max-width:760px){ .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body class="mode-tabla">
+<div class="wrap">
+  <div class="topbar">
+    <div class="tabs">
+      <button class="tab on" data-mode="tabla" onclick="setMode('tabla')">📋 Tabla</button>
+      <button class="tab" data-mode="etiq" onclick="setMode('etiq')">🏷️ Etiquetas</button>
+    </div>
+    <button class="btn primary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+  </div>
+
+  <!-- ============ VISTA TABLA ============ -->
+  <div class="view-tabla">
+    <div class="sheet">
+      <div class="band"></div>
+      <div class="head">
+        <div class="brand"><div class="mark">V</div><div><div class="name">VAM GARAGE</div><div class="subt">Estudio automotriz premium · Pachuca</div></div></div>
+        <div class="doc"><div class="doc-t">Tabla de Diluciones</div><div class="doc-s">Referencia de taller</div></div>
+      </div>
+
+      <div class="legend">
+        <p><b>Cómo se lee:</b> <code>10+1</code> = 10 medidas de <b>agua</b> + 1 medida de <b>producto</b> (11 partes en total).
+        Las columnas <b>Bote 1 L</b> y <b>Bote 500 ml</b> ya te dan los mililitros exactos para cada bote.</p>
+        <p class="mini">Fórmula para cualquier bote: <b>producto = volumen total ÷ (N+1)</b>. El resto es agua.</p>
+      </div>
+
+      <div id="tables"></div>
+
+      <div class="foot-note"><b>Importante:</b> las diluciones del bloque 1 son las de nuestros SOPs. La mayoría de los químicos son marca <b>Autofinish</b> (el APC es su <b>Citric</b>; los rangos de etiqueta coinciden con los nuestros). Si la etiqueta del bote dice algo distinto, manda la etiqueta. Los tiempos de contacto y el uso en frío/sombra aplican siempre. Las filas con <span class="qtag">confirmar</span> están pendientes de verificar producto.</div>
+      <div class="sh-foot">VAM Garage · Pachuca, Hidalgo · Documento interno · Diluciones y usos de químicos · Última actualización: 2026-07-07</div>
+    </div>
+  </div>
+
+  <!-- ============ VISTA ETIQUETAS ============ -->
+  <div class="view-etiq">
+    <p class="etiq-hint">Recorta por la línea punteada y pega una en cada bote. Cada etiqueta trae la receta para <b>1 L</b> y <b>500 ml</b>. Imprime en papel adhesivo; si va al área de lavado, lamínala. Las de sello <b style="color:var(--warn)">CONFIRMAR</b> están pendientes de verificar producto.</p>
+    <div class="grid" id="labels"></div>
+  </div>
+</div>
+
+<script>
+/* ===== FUENTE ÚNICA — alimenta Tabla y Etiquetas =====
+   d = dilución (agua+producto) · r1 = receta bote 1 L · r5 = receta bote 500 ml
+   n = notas/seguridad · c = pendiente de confirmar · rtu = listo para usar (no se diluye) */
+const DILU = {
+  diluibles:[
+    {p:"APC — interiores", u:"Tablero, puertas, postes, plásticos", d:"10+1", r1:"90 ml + 910 ml agua", r5:"45 ml + 455 ml agua", n:"A la brocha o microfibra · nunca directo a pantallas"},
+    {p:"APC — prelavado carrocería", u:"Prelavado sin contacto", d:"10+1", r1:"90 ml + 910 ml agua", r5:"45 ml + 455 ml agua", n:"De abajo hacia arriba · no dejar secar"},
+    {p:"APC — motor", u:"Plásticos y tolvas del motor", d:"15+1 a 20+1", r1:"50–65 ml + resto agua", r5:"25–33 ml + resto agua", n:"Motor frío · evitar zonas eléctricas"},
+    {p:"Desengrasante", u:"Grasa localizada, zonas bajas", d:"5+1 a 8+1", r1:"110–165 ml + resto agua", r5:"55–83 ml + resto agua", n:"Solo en la zona · nunca en conectores ni sensores"},
+    {p:"IPA / Panel wipe", u:"Limpieza previa al cerámico", d:"20%", r1:"200 ml IPA + 800 ml agua", r5:"100 ml IPA + 400 ml agua", n:"Agua destilada · doble wipe en 3 y 5 años"},
+    {p:"Champú Ultra Wash", u:"Lavado a dos cubetas", d:"20–30 ml / cubeta 15 L", r1:"—", r5:"—", n:"Autofinish Ultra Wash · pH balanceado · no remueve ceras/selladores · 2–3 tapas por cubeta · 1 L ≈ 50 lavadas"},
+    {p:"Limpiador de vidrios", u:"Cristales interior y exterior", d:"1+1", r1:"500 ml alcohol + 500 ml agua", r5:"250 ml alcohol + 250 ml agua", n:"50% alcohol isopropílico · 50% agua"},
+    {p:"WRC — Water Spot Remover", u:"Lluvia ácida / manchas de agua", d:"3+1 (media)", r1:"250 ml + 750 ml agua", r5:"125 ml + 375 ml agua", n:"Autofinish WSR · fuerte 2+1 · media 3+1 · suave 5+1 · superficie fría y en sombra, con guantes"},
+    {p:"Lubricante de clay (ECOWASH PRO)", u:"Descontaminación mecánica con arcilla", d:"8+1", r1:"110 ml + 890 ml agua", r5:"55 ml + 445 ml agua", n:"ECOWASH PRO · también lavado en seco 4+1 y detallador 6+1"},
+    {p:"Dressing (Gloss)", u:"Llantas, gomas, plásticos, motor", d:"2+1 (medio)", r1:"333 ml + 667 ml agua", r5:"167 ml + 333 ml agua", n:"Autofinish Gloss · agitar · brillo alto 1+1 · satinado 4+1 · base agua, protección UV"},
+    {p:"Super Cleaner (rines)", u:"Rines, llantas y tolvas", d:"150 ml / L", r1:"150 ml + 850 ml agua", r5:"75 ml + 425 ml agua", n:"Coincide con Citric a fuerza fuerte (≈5+1) · confirmar si es Citric y el bote", c:true},
+    {p:"Champú de preparación", u:"Prelavado / espuma de preparación", d:"20+1", r1:"48 ml + 952 ml agua", r5:"24 ml + 476 ml agua", n:"Confirmar producto exacto (¿Ultra Wash como prelavado?)", c:true},
+    {p:"Aeder (ácido)", u:"Limpieza ácida pesada", d:"2+1", r1:"333 ml + 667 ml agua", r5:"167 ml + 333 ml agua", n:"No es Autofinish · confirmar marca/nombre · guantes y protección", c:true},
+  ],
+  listos:[
+    {p:"CanCoat Evo", u:"Cerámico 1 año — directo con aplicador"},
+    {p:"Gtecnic", u:"Cerámico 3 años — directo"},
+    {p:"Gyeon Mohs EVO ×2", u:"Cerámico 5 años (doble capa) — directo"},
+    {p:"Gyeon Matte EVO", u:"Cerámico mate 2 años — directo"},
+    {p:"Iron Remover (Ferric)", u:"Descontaminación férrica — directo sobre pintura fría"},
+    {p:"Compounds / pulimentos", u:"DA Course, Rupes Advance — directo al pad"},
+    {p:"LPV", u:"Interiores — se rellena directo, sin diluir"},
+    {p:"Black Trike", u:"Llantas / gomas — se rellena directo, sin diluir"},
+  ],
+  confirmar:[]
+};
+
+/* ---------- VISTA TABLA ---------- */
+function renderTabla(root){
+  const rowsA = DILU.diluibles.map(r=>`<tr class="${r.c?'q':''}">
+    <td class="prod">${r.p}${r.c?'<span class="qtag">confirmar</span>':''}</td><td>${r.u}</td>
+    <td class="dil">${r.d}</td>
+    <td class="mix">${r.r1}</td>
+    <td class="mix">${r.r5}</td>
+    <td class="note-c">${r.n}</td></tr>`).join("");
+  const rowsB = DILU.listos.map(r=>`<tr>
+    <td class="prod">${r.p}</td><td>${r.u}</td>
+    <td colspan="3"><span class="rtu">Listo para usar · no diluir</span></td>
+    <td class="note-c">Se aplica / rellena directo</td></tr>`).join("");
+  const rowsC = DILU.confirmar.map(r=>`<tr class="q">
+    <td class="prod">${r.p}</td><td>${r.u}</td>
+    <td class="dil" style="color:#c98a2b">❓</td>
+    <td class="mix" colspan="2" style="color:#c98a2b">— por definir —</td>
+    <td class="note-c">Confirmar dilución de la etiqueta</td></tr>`).join("");
+
+  const thead = `<thead><tr><th>Producto</th><th>Para qué</th><th>Dilución</th><th>Bote 1 L</th><th>Bote 500 ml</th><th>Notas</th></tr></thead>`;
+  const sec3 = DILU.confirmar.length ? `
+    <div class="sec-h"><span class="sec-n">3</span><h3>Por confirmar</h3><span class="hint">falta dilución de etiqueta</span></div>
+    <div class="tbl-scroll"><table>${thead}<tbody>${rowsC}</tbody></table></div>` : "";
+
+  root.innerHTML = `
+    <div class="sec-h"><span class="sec-n">1</span><h3>Productos que se diluyen</h3><span class="hint">agua + producto</span></div>
+    <div class="tbl-scroll"><table>${thead}<tbody>${rowsA}</tbody></table></div>
+
+    <div class="sec-h"><span class="sec-n">2</span><h3>Listos para usar</h3><span class="hint">no se diluyen</span></div>
+    <div class="tbl-scroll"><table>${thead}<tbody>${rowsB}</tbody></table></div>
+    ${sec3}`;
+}
+
+/* ---------- VISTA ETIQUETAS ---------- */
+function fmtDil(d){
+  // resalta el sufijo "(media)" / "a 20+1" en menor tamaño
+  return d.replace(/\s*\((.*?)\)/,' <small>$1</small>').replace(/\s(a\s.*)$/,' <small>$1</small>');
+}
+function renderEtiquetas(root){
+  const dilu = DILU.diluibles.map(e=>{
+    const isCubeta = e.d.includes('cubeta');
+    const big = isCubeta ? e.d.split('/')[0].trim()+'<small> /cubeta</small>' : fmtDil(e.d);
+    const rec = isCubeta
+      ? `<div>por cubeta de 15 L</div><div><b>2–3 tapas</b></div>`
+      : `<div><span class="vol">1 L</span> <b>${e.r1}</b></div><div><span class="vol">½ L</span> <b>${e.r5}</b></div>`;
+    return `
+    <div class="label"><div class="lband"></div><div class="lbody">
+      <div class="lhead"><div><div class="pname">${e.p}</div><div class="puse">${e.u}</div></div>${e.c?'<span class="badge">Confirmar</span>':''}</div>
+      <div class="lmid"><div class="ldil">${big}</div><div class="receta">${rec}</div></div>
+      <div class="lfoot"><div class="safety">${e.n}</div><div class="lmark"><div class="mv">V</div><div class="mtxt">VAM GARAGE</div></div></div>
+    </div></div>`;});
+  const rtu = DILU.listos.filter(e=>/directo, sin diluir/.test(e.u)).map(e=>`
+    <div class="label"><div class="lband"></div><div class="lbody">
+      <div class="lhead"><div><div class="pname">${e.p}</div><div class="puse">${e.u.split(' — ')[0]}</div></div></div>
+      <div class="lmid"><div class="rtu-tag">DIRECTO</div><div class="rtu-txt">Se rellena sin diluir</div></div>
+      <div class="lfoot"><div class="safety">Listo para usar</div><div class="lmark"><div class="mv">V</div><div class="mtxt">VAM GARAGE</div></div></div>
+    </div></div>`);
+  root.innerHTML = dilu.concat(rtu).join("");
+}
+
+/* ---------- Toggle ---------- */
+function setMode(m){
+  document.body.className = 'mode-'+m;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on', t.dataset.mode===m));
+}
+
+renderTabla(document.getElementById("tables"));
+renderEtiquetas(document.getElementById("labels"));
+</script>
+</body>
+</html>

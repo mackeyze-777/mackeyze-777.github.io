@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAM Garage — Dashboard Costos &amp; Rentabilidad</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050505;--bg2:#0c0c0c;--bg3:#131313;--border:#1e1e1e;
+  --text:#f0f0f0;--muted:#555;--accent:#e8178a;
+  --green:#27c76f;--yellow:#f0a500;--red:#e04040;
+  --blue:#3a8fd4;--orange:#e06030;--purple:#8855cc;
+  --pink:#e8178a;--silver:#8a8a8a;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+/* HEADER */
+.header{background:var(--bg2);border-bottom:1px solid var(--border);border-top:3px solid var(--accent);padding:10px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:200;flex-wrap:wrap}
+.logo{font-size:11px;font-weight:700;letter-spacing:6px;color:var(--text);text-transform:uppercase}
+.logo-sub{font-size:9px;color:var(--muted);margin-top:2px;letter-spacing:2px;text-transform:uppercase}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hbadge{font-size:11px;padding:4px 10px;background:var(--bg3);border-radius:20px;border:1px solid var(--border);color:var(--muted)}
+.hbadge.warn{color:var(--yellow);border-color:var(--yellow)}
+/* TABS */
+.tabs{background:var(--bg2);border-bottom:1px solid var(--border);display:flex;padding:0 20px;gap:0;overflow-x:auto;position:sticky;top:57px;z-index:100}
+.tab-btn{padding:9px 16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--silver)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+/* MAIN */
+.main{padding:20px;max-width:1400px;margin:0 auto}
+.tab-panel{display:none}.tab-panel.active{display:block}
+/* BUTTONS */
+.btn{padding:7px 14px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600;transition:opacity .15s;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{opacity:.82}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn-green{background:var(--green);color:#000}
+.btn-yellow{background:var(--yellow);color:#000}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-sm{padding:4px 10px;font-size:11px}.btn-xs{padding:2px 7px;font-size:11px}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:1100px){.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}}
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px}
+/* KPI */
+.kpi-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.kpi-value{font-size:24px;font-weight:800;line-height:1.1;letter-spacing:-0.5px}
+.kpi-sub{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:.5px}
+/* SECTION */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px}
+.sh-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--silver)}
+.sh-title small{font-size:10px;color:var(--muted);font-weight:400;margin-left:6px;letter-spacing:.5px;text-transform:none}
+.divider{height:1px;background:var(--border);margin:20px 0}
+/* BADGE */
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.b-g{background:#0a2a1a;color:var(--green);border:1px solid var(--green)}
+.b-y{background:#1a1206;color:var(--yellow);border:1px solid var(--yellow)}
+.b-r{background:#2a0a0a;color:var(--red);border:1px solid var(--red)}
+.b-b{background:#0a1a2e;color:var(--blue);border:1px solid var(--blue)}
+.b-p{background:#1a0a2e;color:var(--purple);border:1px solid var(--purple)}
+.b-o{background:#2a1a0a;color:var(--orange);border:1px solid var(--orange)}
+.b-m{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+/* WORKER */
+.worker-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;gap:12px;transition:border-color .2s}
+.worker-card:hover{border-color:#333}
+.w-av{width:40px;height:40px;border-radius:4px;background:var(--bg3);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent);flex-shrink:0;letter-spacing:1px}
+/* OVERHEAD */
+.oh-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.oh-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px}
+.oh-label{font-size:10px;color:var(--muted);margin-bottom:3px}
+.oh-input{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--yellow);font-size:15px;font-weight:700;width:100%;padding:2px 0}
+.oh-input:focus{outline:none;border-bottom-color:var(--yellow)}
+/* SERVICE CARD */
+.svc-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color .2s}
+.svc-card:hover{border-color:#2a2a2a}
+.svc-head{padding:11px 13px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:8px}
+.svc-body{padding:12px 13px}
+.svc-foot{padding:9px 13px;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+/* VEHICLE PRICE GRID */
+.vpg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:7px}
+.vpc{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:5px 7px;text-align:center}
+.vpc.active{border-top:2px solid var(--accent);background:#0f0508}
+.vpc-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:2px}
+.vpc-lbl.hl{color:var(--accent)}
+.vpc-input{background:transparent;border:none;color:var(--text);font-size:13px;font-weight:700;width:100%;text-align:center;padding:0}
+.vpc-input.hl{color:var(--accent);font-weight:800}
+.vpc-input:focus{outline:none;color:var(--yellow)}
+.vpc-mg{font-size:9px;font-weight:700;margin-top:2px;text-align:center}
+/* COST */
+.cost-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border);font-size:12px}
+.cost-row:last-child{border-bottom:none}
+.cost-label{color:var(--muted)}
+.cost-total{display:flex;justify-content:space-between;padding:7px 0;margin-top:3px;border-top:2px solid var(--border);font-weight:700}
+.mat-item{display:flex;justify-content:space-between;padding:2px 0;font-size:11px;color:var(--muted)}
+/* MARGIN BAR */
+.mbar{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:8px}
+.mfill{height:100%;border-radius:3px;transition:width .35s}
+.minfo{display:flex;justify-content:space-between;font-size:10px;margin-top:3px}
+/* TABLE */
+.twrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:9px 10px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#0f0f0f}
+/* PROG */
+.prog{height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;transition:width .3s}
+/* ACTION BOX */
+.action-box{background:#0c0c05;border:1px solid var(--yellow);border-left:3px solid var(--yellow);border-radius:4px;padding:18px;margin-bottom:20px}
+.action-title{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:8px}
+.action-main{font-size:17px;font-weight:700;margin-bottom:3px}
+.action-sub{font-size:11px;color:var(--muted)}
+.action-nums{display:flex;gap:20px;margin-top:14px;flex-wrap:wrap}
+.anum{text-align:center}
+.anum-val{font-size:20px;font-weight:800}
+.anum-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+/* P&L REAL */
+.plrow{display:grid;grid-template-columns:140px repeat(5,1fr) 80px;gap:0;border-bottom:1px solid var(--border)}
+.plrow.header-row{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:8px 0;border-bottom:2px solid var(--border)}
+.plrow:hover:not(.header-row){background:#1e1e1e}
+.plcell{padding:10px 8px;font-size:13px;display:flex;align-items:center}
+.plcell.right{justify-content:flex-end;font-weight:600}
+.plcell.center{justify-content:center}
+/* CHECKLIST */
+.checklist{list-style:none}
+.cl-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.cl-item:last-child{border-bottom:none}
+.cl-check{width:18px;height:18px;flex-shrink:0;cursor:pointer;accent-color:var(--green);margin-top:1px}
+.cl-label{font-size:13px;font-weight:600;cursor:pointer}
+.cl-label.done{text-decoration:line-through;color:var(--muted)}
+.cl-sub{font-size:11px;color:var(--muted);margin-top:2px}
+/* CAT DIVIDER */
+.cat-div{display:flex;align-items:center;gap:12px;margin:20px 0 10px}
+.cat-div:first-child{margin-top:0}
+.cat-div-label{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;white-space:nowrap;padding:3px 10px;border-radius:2px}
+.cat-div-line{flex:1;height:1px;background:var(--border)}
+.cdl-int{color:var(--green);background:#0a1e0a;border:1px solid var(--green)}
+.cdl-ext{color:var(--blue);background:#0a1222;border:1px solid var(--blue)}
+.cdl-add{color:var(--yellow);background:#1a1206;border:1px solid var(--yellow)}
+.cdl-combo{color:var(--orange);background:#1e1108;border:1px solid var(--orange)}
+.cdl-cer{color:var(--purple);background:#120a1e;border:1px solid var(--purple)}
+/* FILTER PILLS */
+.pill-group{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.pill{padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--muted);cursor:pointer;font-size:11px;font-weight:600;transition:all .15s}
+.pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal-ov.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--accent);border-radius:6px;padding:22px;max-width:520px;width:100%;max-height:92vh;overflow-y:auto}
+.modal-title{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--silver);margin-bottom:18px;padding-bottom:11px;border-bottom:1px solid var(--border)}
+.fg{margin-bottom:12px}
+.flbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;display:block}
+.finput{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:8px 11px;color:var(--text);font-size:13px}
+.finput:focus{outline:none;border-color:var(--accent)}
+.modal-actions{display:flex;gap:8px;margin-top:18px;justify-content:flex-end}
+/* MAT ROW */
+.mat-row{display:flex;gap:7px;align-items:center;margin-bottom:6px}
+.mat-row input{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:5px 8px;color:var(--text);font-size:12px}
+.mat-row input:focus{outline:none;border-color:var(--accent)}
+.mat-row .mn{flex:2}.mat-row .mc{flex:1;max-width:85px}
+/* EDIT NUM */
+.en{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:3px 7px;color:var(--text);font-size:12px;width:60px}
+.en:focus{outline:none;border-color:var(--accent)}
+/* NOTE */
+.note-field{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:7px 10px;color:var(--muted);font-size:11px;resize:none;font-family:inherit}
+.note-field:focus{outline:none;border-color:var(--accent);color:var(--text)}
+/* PRINT */
+@media print{
+  .header,.tabs,.btn,.modal-ov,.pill-group,.svc-foot .btn,.action-box,#checklistSection{display:none!important}
+  .tab-panel{display:none!important}
+  #tab-rentabilidad{display:block!important}
+  body{background:#fff;color:#000}
+  .card,.svc-card{border:1px solid #ccc;background:#fff}
+  table th,table td{color:#000}
+}
+/* RESUMEN */
+.res-block{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px}
+.res-num{font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-1px}
+.res-lbl{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.res-sub{font-size:10px;color:var(--muted);margin-top:3px}
+.trend-bar-wrap{display:flex;align-items:flex-end;gap:6px;height:70px}
+.trend-bar-col{display:flex;flex-direction:column;align-items:center;flex:1;gap:3px;height:100%}
+.trend-bar-fill{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height .3s}
+.trend-bar-lbl{font-size:8px;color:var(--muted);text-align:center;white-space:nowrap}
+/* TEXT UTILS */
+.tc-g{color:var(--green)}.tc-y{color:var(--yellow)}.tc-r{color:var(--red)}.tc-m{color:var(--muted)}.tc-a{color:var(--accent)}
+.fw7{font-weight:700}.fw8{font-weight:800}
+.mb4{margin-bottom:4px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:14px">
+    <!-- Apex mark -->
+    <svg width="30" height="27" viewBox="0 0 90 80" fill="var(--accent)" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+      <path fill-rule="evenodd" d="M45 3 L86 77 L68 77 L57 58 L62 46 L45 18 L28 46 L33 58 L22 77 L4 77 Z M28 46 L62 46 L57 58 L33 58 Z"/>
+      <rect x="63" y="43" width="22" height="6" rx="1"/>
+    </svg>
+    <div>
+      <div class="logo">V A M &nbsp; G A R A G E</div>
+      <div class="logo-sub">Costos &nbsp;&middot;&nbsp; Rentabilidad &nbsp;&middot;&nbsp; Proyección</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="hbadge" id="saveBadge">✓ Guardado</span>
+    <button class="btn btn-ghost btn-sm" onclick="exportJSON()" title="Descargar copia de seguridad">↓ Exportar</button>
+    <label class="btn btn-ghost btn-sm" style="cursor:pointer" title="Restaurar desde archivo">↑ Importar<input type="file" accept=".json" onchange="importJSON(event)" style="display:none"></label>
+    <button class="btn btn-ghost btn-sm" onclick="if(confirm('¿Resetear a valores por defecto?'))resetData()">↺ Reset</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('resumen',this)">Resumen</button>
+  <button class="tab-btn" onclick="switchTab('servicios',this)">Servicios</button>
+  <button class="tab-btn" onclick="switchTab('rentabilidad',this)">Rentabilidad</button>
+  <button class="tab-btn" onclick="switchTab('equipo',this)">Equipo</button>
+</div>
+
+<div class="main">
+
+<!-- ===== RESUMEN ===== -->
+<div id="tab-resumen" class="tab-panel active">
+  <div class="g4 mb16" id="res-kpis"></div>
+  <div id="res-action" class="mb16"></div>
+  <div class="g2 mb16">
+    <div>
+      <div class="sh mb8"><div class="sh-title">Dónde ganas más por trabajo</div></div>
+      <div id="res-top"></div>
+    </div>
+    <div>
+      <div class="sh mb8"><div class="sh-title">Servicios a corregir</div></div>
+      <div id="res-crit"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EQUIPO ===== -->
+<div id="tab-equipo" class="tab-panel">
+  <div class="sh"><div class="sh-title">Equipo <small>Tarifas por hora · usadas en el cálculo de mano de obra</small></div>
+    <button class="btn btn-primary btn-sm" onclick="openWorkerModal()">+ Técnico</button></div>
+  <div id="workersGrid" class="g3 mb20"></div>
+
+  <div class="divider"></div>
+  <div class="sh"><div class="sh-title">Costos Fijos Mensuales <small>Se distribuyen entre trabajos para calcular overhead por servicio</small></div></div>
+  <div class="card mb16">
+    <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Cada trabajo carga una fracción de estos costos según el <strong style="color:var(--text)">overhead factor</strong> configurado en cada servicio (1.0 = 100%, 0.4 = 40%).</div>
+    <div class="oh-grid" id="overheadGrid"></div>
+    <div style="display:flex;gap:20px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);flex-wrap:wrap">
+      <div>
+        <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Trabajos estimados/mes</div>
+        <input type="number" id="jobsPerMonth" class="oh-input" style="font-size:18px;width:65px" oninput="state.jobsPerMonth=parseInt(this.value)||20;saveAndRender()">
+      </div>
+      <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Total fijos/mes</div>
+        <div style="font-size:20px;font-weight:800" id="ohTotal">$0</div></div>
+      <div><div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">Overhead base/trabajo</div>
+        <div style="font-size:20px;font-weight:800;color:var(--yellow)" id="ohPerJob">$0</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sh"><div class="sh-title">Checklist de acciones clave</div>
+    <button class="btn btn-ghost btn-sm" onclick="addCheckItem()">+ Acción</button></div>
+  <div class="card"><ul class="checklist" id="checklistEl"></ul></div>
+</div>
+
+<!-- ===== SERVICIOS ===== -->
+<div id="tab-servicios" class="tab-panel">
+  <div class="sh"><div class="sh-title">Servicios <small>Precios por tamaño de vehículo · ✏️ edita horas e insumos</small></div>
+    <button class="btn btn-primary btn-sm" onclick="openServiceModal()">+ Servicio</button></div>
+  <div class="pill-group" id="catFilter"></div>
+  <div id="servicesContainer"></div>
+</div>
+
+<!-- ===== RENTABILIDAD ===== -->
+<div id="tab-rentabilidad" class="tab-panel">
+  <div class="sh"><div class="sh-title">Rentabilidad <small>Por trabajo, a precio Mediano</small></div>
+    <button class="btn btn-blue btn-sm" onclick="window.print()">🖨 Imprimir reporte</button></div>
+  <div class="g4 mb20" id="kpiCards"></div>
+  <div id="actionBox"></div>
+  <div class="sh mb8"><div class="sh-title">Ranking — peor a mejor margen</div></div>
+  <div class="card mb20">
+    <div class="twrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Servicio</th>
+          <th>Precio Med.</th><th>Costo</th>
+          <th>Ganancia / trab.</th>
+          <th>Margen</th><th>Precio sugerido</th><th>Estado</th>
+        </tr></thead>
+        <tbody id="rankingBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ===== MODAL WORKER ===== -->
+<div id="wModal" class="modal-ov">
+  <div class="modal">
+    <div class="modal-title" id="wModalTitle">Técnico</div>
+    <div class="fg"><label class="flbl">Nombre</label><input id="wm-name" class="finput" type="text"></div>
+    <div class="fg"><label class="flbl">Tarifa/hora ($MXN)</label><input id="wm-rate" class="finput" type="number"></div>
+    <div class="fg"><label class="flbl">Rol</label><input id="wm-role" class="finput" type="text"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('wModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveWorker()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL SERVICE (nuevo) ===== -->
+<div id="sModal" class="modal-ov">
+  <div class="modal">
+    <div class="modal-title">Agregar servicio</div>
+    <div class="fg"><label class="flbl">Nombre</label><input id="sm-name" class="finput" type="text"></div>
+    <div class="fg"><label class="flbl">Categoría</label>
+      <select id="sm-cat" class="finput">
+        <option value="interior">Interior</option><option value="exterior">Exterior</option>
+        <option value="adicional">Adicional</option><option value="combo">Combo</option>
+        <option value="ceramico">Cerámico</option>
+      </select></div>
+    <div class="g2">
+      <div class="fg"><label class="flbl">Compacto ($)</label><input id="sm-pc" class="finput" type="number" placeholder="0"></div>
+      <div class="fg"><label class="flbl">Mediano ($)</label><input id="sm-pm" class="finput" type="number" placeholder="0"></div>
+      <div class="fg"><label class="flbl">SUV ($)</label><input id="sm-ps" class="finput" type="number" placeholder="0"></div>
+      <div class="fg"><label class="flbl">3 Filas ($)</label><input id="sm-pl" class="finput" type="number" placeholder="0"></div>
+    </div>
+    <div class="g2">
+      <div class="fg"><label class="flbl">Margen objetivo (%)</label><input id="sm-tgt" class="finput" type="number" value="45"></div>
+      <div class="fg"><label class="flbl">Precio Fase 1 — Mediano</label><input id="sm-f1" class="finput" type="number" placeholder="0"></div>
+      <div class="fg"><label class="flbl">¿Qué tanto carga costos fijos? (1.0 = completo, 0.3 = poco)</label><input id="sm-oh" class="finput" type="number" value="1" step="0.1"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('sModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveService()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL EDIT SERVICE ===== -->
+<div id="eModal" class="modal-ov">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-title" id="eModalTitle">Editar servicio</div>
+    <div class="fg"><label class="flbl">Nombre</label><input id="em-name" class="finput" type="text"></div>
+    <div class="fg"><label class="flbl">Categoría</label>
+      <select id="em-cat" class="finput">
+        <option value="interior">Interior</option><option value="exterior">Exterior</option>
+        <option value="adicional">Adicional</option><option value="combo">Combo</option>
+        <option value="ceramico">Cerámico</option>
+      </select></div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px">Horas por técnico</div>
+    <div id="em-labor-rows" class="mb16"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)">Insumos / Materiales</div>
+      <button class="btn btn-ghost btn-xs" onclick="addMatRow()">+ Insumo</button>
+    </div>
+    <div id="em-mat-rows" class="mb16"></div>
+    <div class="g2">
+      <div class="fg"><label class="flbl">Amortización equipo ($)</label><input id="em-amort" class="finput" type="number" placeholder="0"></div>
+      <div class="fg"><label class="flbl">Carga costos fijos (1.0 completo · 0.3 poco)</label><input id="em-ohf" class="finput" type="number" step="0.1"></div>
+      <div class="fg"><label class="flbl">Margen objetivo (%)</label><input id="em-tgt" class="finput" type="number"></div>
+      <div class="fg"><label class="flbl">Precio Fase 1 — Mediano ($)</label><input id="em-f1" class="finput" type="number"></div>
+    </div>
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:7px">Precios por tamaño</div>
+    <div class="g2">
+      <div class="fg"><label class="flbl">Compacto</label><input id="em-pc" class="finput" type="number"></div>
+      <div class="fg"><label class="flbl">Mediano ★</label><input id="em-pm" class="finput" type="number"></div>
+      <div class="fg"><label class="flbl">SUV / Camioneta</label><input id="em-ps" class="finput" type="number"></div>
+      <div class="fg"><label class="flbl">3 Filas (0 = N/A)</label><input id="em-pl" class="finput" type="number"></div>
+    </div>
+    <div class="fg"><label class="flbl">Notas internas</label>
+      <textarea id="em-notes" class="note-field" rows="2" placeholder="Observaciones, contexto, protocolos especiales…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('eModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEditService()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DEFAULT STATE
+// ============================================================
+const SK = 'vam_dash_v3';
+
+const DEFAULT = {
+  workers:[
+    {id:1,name:'Ángel',rate:65,role:'Técnico principal'},
+    {id:2,name:'Jesús',rate:40,role:'Técnico'}
+  ],
+  overhead:[
+    {label:'Renta + servicios',monthly:2557},
+    {label:'Software',monthly:2334},
+    {label:'Publicidad Meta Ads',monthly:3629},
+    {label:'Impuestos + contabilidad',monthly:900},
+    {label:'Otros fijos',monthly:600}
+  ],
+  jobsPerMonth:20,
+  checklist:[
+    {id:1,text:'Ángel ejecuta un cerámico completo solo',sub:'Documentar el proceso como SOP-003',done:false},
+    {id:2,text:'Documentar SOP-003 Cerámica',sub:'Fotografiar cada paso del siguiente trabajo',done:false},
+    {id:3,text:'Actualizar precios de cerámico a Fase 1',sub:'Empezar con clientes nuevos — no anunciar',done:false},
+    {id:4,text:'Revisar precios de los servicios marcados en rojo',sub:'Subir al precio sugerido o Fase 1',done:false}
+  ],
+  services:[
+    {id:1,name:'Vestiduras mantenimiento',cat:'interior',prices:{c:1200,m:1400,s:1500,l:2000},tgt:42,f1m:1600,ohf:1.0,vol:5,amort:0,notes:'',
+      mats:[{n:'Limpiadores tapicería',c:80},{n:'Microfibras interiores',c:50},{n:'Ambientador',c:40},{n:'Aspirado consumibles',c:30}],
+      labor:[{wid:1,h:2},{wid:2,h:1}]},
+    {id:2,name:'Vestiduras Avanzado',cat:'interior',prices:{c:2800,m:2800,s:3000,l:3500},tgt:40,f1m:3200,ohf:1.0,vol:4,amort:0,notes:'',
+      mats:[{n:'Limpiador tapicería premium',c:180},{n:'Limpiador plásticos',c:120},{n:'Vapor consumibles',c:150},{n:'Cuero/vinil',c:200},{n:'Microfibras',c:80},{n:'Ambientador',c:67}],
+      labor:[{wid:1,h:4},{wid:2,h:2}]},
+    {id:3,name:'Cera + descontaminación',cat:'exterior',prices:{c:400,m:500,s:600,l:0},tgt:35,f1m:650,ohf:0.5,vol:3,amort:0,notes:'Add-on — no standalone',
+      mats:[{n:'Cera carnauba',c:60},{n:'Clay bar + lubricante',c:50},{n:'Descontaminante pH',c:40},{n:'Microfibras',c:30}],
+      labor:[{wid:1,h:1},{wid:2,h:0}]},
+    {id:4,name:'Pulido 3-en-1',cat:'exterior',prices:{c:1500,m:1500,s:1500,l:0},tgt:40,f1m:1800,ohf:1.0,vol:8,amort:0,notes:'',
+      mats:[{n:'DA Course 60ml',c:83},{n:'Rupes Advance 30ml',c:47},{n:'WRC descontaminante',c:56},{n:'Foam pads',c:60},{n:'Microfibras',c:44},{n:'Panel wipe',c:40}],
+      labor:[{wid:1,h:3},{wid:2,h:1}]},
+    {id:5,name:'Lavado premium',cat:'exterior',prices:{c:400,m:450,s:500,l:0},tgt:40,f1m:550,ohf:0.3,vol:6,amort:0,notes:'Servicio de tráfico — add-on',
+      mats:[{n:'Shampoo premium',c:30},{n:'Microfibras',c:35},{n:'Tire shine + vidrios',c:20}],
+      labor:[{wid:1,h:0.5},{wid:2,h:0.5}]},
+    {id:6,name:'Lluvia ácida',cat:'exterior',prices:{c:1000,m:1000,s:1000,l:0},tgt:38,f1m:1400,ohf:1.0,vol:2,amort:0,notes:'Rango real: $800–$1,200 según severidad',
+      mats:[{n:'Descontaminante ácido',c:100},{n:'Clay bar premium',c:60},{n:'Pulimento suave',c:60},{n:'Panel wipe',c:30},{n:'Microfibras',c:30}],
+      labor:[{wid:1,h:2},{wid:2,h:1}]},
+    {id:7,name:'Restauración de faros',cat:'adicional',prices:{c:400,m:500,s:500,l:0},tgt:35,f1m:600,ohf:0.4,vol:4,amort:0,notes:'',
+      mats:[{n:'Lija + compounds faro',c:60},{n:'Coating UV faros',c:60},{n:'Cinta + otros',c:20}],
+      labor:[{wid:1,h:1},{wid:2,h:0}]},
+    {id:8,name:'Lavado de motor',cat:'adicional',prices:{c:400,m:400,s:400,l:0},tgt:35,f1m:500,ohf:0.4,vol:3,amort:0,notes:'',
+      mats:[{n:'Desengrasante motor',c:50},{n:'Protector plásticos',c:30},{n:'Consumibles',c:20}],
+      labor:[{wid:1,h:0.75},{wid:2,h:0}]},
+    {id:9,name:'Pulido + Vestiduras + Motor',cat:'combo',prices:{c:3000,m:3000,s:3500,l:5000},tgt:45,f1m:3500,ohf:1.0,vol:3,amort:0,notes:'',
+      mats:[{n:'Insumos pulido',c:330},{n:'Insumos interior',c:300},{n:'Motor extras',c:80}],
+      labor:[{wid:1,h:6},{wid:2,h:2}]},
+    {id:10,name:'Corrección de pintura',cat:'combo',prices:{c:3500,m:3500,s:4000,l:0},tgt:55,f1m:4500,ohf:1.0,vol:2,amort:0,notes:'',
+      mats:[{n:'DA Course corrección 90ml',c:124},{n:'Rupes Advance finish',c:47},{n:'WRC + prep',c:80},{n:'Foam pads corrección',c:100},{n:'Panel wipe',c:40}],
+      labor:[{wid:1,h:5},{wid:2,h:2}]},
+    {id:11,name:'Cerámico mate 2 años',cat:'ceramico',prices:{c:3500,m:3500,s:4000,l:0},tgt:50,f1m:4500,ohf:1.0,vol:1,amort:250,notes:'',
+      mats:[{n:'Cerámico mate 2yr',c:320},{n:'Prep + panel wipe',c:80},{n:'Foam applicators',c:60},{n:'Microfibras premium',c:60}],
+      labor:[{wid:1,h:4},{wid:2,h:1.5}]},
+    {id:12,name:'1 paso + cerámico 1 año',cat:'ceramico',prices:{c:2500,m:2500,s:2800,l:0},tgt:60,f1m:4000,ohf:1.0,vol:3,amort:590,notes:'Precio crítico — 10% margen real',
+      mats:[{n:'CanCoat Evo',c:200},{n:'DA Course 60ml',c:83},{n:'Rupes Advance 30ml',c:47},{n:'WRC',c:56},{n:'Foam pads',c:120},{n:'Microfibras',c:60},{n:'Clay bar',c:50},{n:'Panel wipe',c:40}],
+      labor:[{wid:1,h:5},{wid:2,h:2}]},
+    {id:13,name:'2 pasos + cerámico 1 año',cat:'ceramico',prices:{c:4000,m:4000,s:4500,l:0},tgt:55,f1m:5500,ohf:1.0,vol:1,amort:600,notes:'',
+      mats:[{n:'CanCoat Evo',c:200},{n:'Pulimento 2 pasos',c:200},{n:'WRC + prep',c:80},{n:'Foam pads ×2',c:200},{n:'Microfibras',c:90},{n:'Clay bar',c:80}],
+      labor:[{wid:1,h:7},{wid:2,h:2}]},
+    {id:14,name:'1 paso + cerámico 3 años',cat:'ceramico',prices:{c:3800,m:3800,s:4200,l:0},tgt:55,f1m:5500,ohf:1.0,vol:2,amort:500,notes:'',
+      mats:[{n:'Cerámico 3yr',c:400},{n:'Pulimento 1 paso',c:100},{n:'WRC + prep',c:80},{n:'Pads + microfibras',c:120},{n:'Clay bar',c:80}],
+      labor:[{wid:1,h:5},{wid:2,h:2}]},
+    {id:15,name:'2 pasos + cerámico 3 años',cat:'ceramico',prices:{c:5000,m:5000,s:5500,l:0},tgt:55,f1m:7000,ohf:1.0,vol:1,amort:650,notes:'',
+      mats:[{n:'Cerámico 3yr premium',c:480},{n:'Pulimento 2 pasos',c:200},{n:'WRC + prep',c:80},{n:'Foam pads ×2',c:200},{n:'Microfibras + clay',c:130}],
+      labor:[{wid:1,h:8},{wid:2,h:3}]},
+    {id:16,name:'2 pasos + cerámico 5 años (Pure Evo)',cat:'ceramico',prices:{c:7000,m:8000,s:8000,l:0},tgt:60,f1m:10000,ohf:1.0,vol:1,amort:686,notes:'',
+      mats:[{n:'Pure Evo 5yr',c:843},{n:'Pulimentos 2 pasos',c:200},{n:'Consumibles + pads',c:350}],
+      labor:[{wid:1,h:10},{wid:2,h:4}]},
+    {id:17,name:'Cerámico a piel / cuero',cat:'ceramico',prices:{c:800,m:800,s:900,l:0},tgt:40,f1m:1100,ohf:0.5,vol:2,amort:0,notes:'',
+      mats:[{n:'Cerámico piel',c:120},{n:'Prep cuero',c:40},{n:'Aplicadores',c:20}],
+      labor:[{wid:1,h:1},{wid:2,h:0}]},
+    {id:18,name:'Cerámico a plásticos',cat:'ceramico',prices:{c:500,m:500,s:500,l:0},tgt:35,f1m:700,ohf:0.4,vol:2,amort:0,notes:'',
+      mats:[{n:'Cerámico plásticos',c:80},{n:'Prep + aplicadores',c:30}],
+      labor:[{wid:1,h:0.5},{wid:2,h:0}]},
+    {id:19,name:'Mantenimiento cerámico',cat:'ceramico',prices:{c:500,m:500,s:700,l:0},tgt:40,f1m:800,ohf:0.6,vol:2,amort:0,notes:'',
+      mats:[{n:'Spray cerámico boost',c:80},{n:'Limpiador cerámico',c:40},{n:'Microfibras suaves',c:30}],
+      labor:[{wid:1,h:1.5},{wid:2,h:0}]}
+  ]
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let state = (() => {
+  try {
+    const s = localStorage.getItem(SK);
+    if(!s) return JSON.parse(JSON.stringify(DEFAULT));
+    const parsed = JSON.parse(s);
+    // merge missing keys from DEFAULT
+    if(!parsed.checklist) parsed.checklist = DEFAULT.checklist;
+    // Limpieza: esta herramienta es solo de precios — descartar datos financieros viejos
+    delete parsed.pl; delete parsed.expenses; delete parsed.ownerSalary; delete parsed.projMonth;
+    // Migración: reemplazar Mackey/Isra por Ángel/Jesús si aún están en localStorage
+    if(parsed.workers) parsed.workers = parsed.workers.map(w=>{
+      if(w.name==='Mackey') return {...w, name:'Ángel', rate:65, role:'Técnico principal'};
+      if(w.name==='Isra')   return {...w, name:'Jesús',  rate:40, role:'Técnico'};
+      return w;
+    });
+    return parsed;
+  } catch(e){ return JSON.parse(JSON.stringify(DEFAULT)); }
+})();
+
+let _activeCat = 'all', _editWorkerId = null, _editSvcId = null, _editMatRows = [];
+
+function saveState(){
+  state.lastSaved = Date.now();
+  localStorage.setItem(SK, JSON.stringify(state));
+  updateSaveBadge();
+}
+function saveAndRender(){ saveState(); renderActive(); }
+function resetData(){ state = JSON.parse(JSON.stringify(DEFAULT)); saveAndRender(); }
+
+function updateSaveBadge(){
+  const b = document.getElementById('saveBadge');
+  if(!state.lastSaved){ b.textContent='Sin guardar'; b.className='hbadge warn'; return; }
+  const days = (Date.now()-state.lastSaved)/(1000*60*60*24);
+  if(days>7){ b.textContent=`⚠ Hace ${Math.floor(days)}d sin actualizar`; b.className='hbadge warn'; }
+  else { b.textContent='✓ Guardado'; b.className='hbadge'; }
+}
+
+// ============================================================
+// CALCS
+// ============================================================
+function ohPerJob(){ return state.overhead.reduce((s,o)=>s+(parseFloat(o.monthly)||0),0)/(state.jobsPerMonth||20); }
+
+function calcCost(svc){
+  const mats=(svc.mats||[]).reduce((s,m)=>s+(parseFloat(m.c)||0),0);
+  const labor=(svc.labor||[]).reduce((s,l)=>{ const w=state.workers.find(w=>w.id===l.wid); return w?s+(parseFloat(w.rate)||0)*(parseFloat(l.h)||0):s; },0);
+  const oh=ohPerJob()*(parseFloat(svc.ohf)||1);
+  const amort=parseFloat(svc.amort)||0;
+  return {mats,labor,oh,amort,total:mats+labor+oh+amort};
+}
+
+function mg(price,cost){ return price>0?(price-cost)/price*100:0; }
+function sug(cost,tgt){ return tgt<100?cost/(1-tgt/100):cost*2; }
+function mgColor(m,t){ return m>=t?'var(--green)':m>=t*0.65?'var(--yellow)':'var(--red)'; }
+function mgStatus(m,t){ return m>=t?'ok':m>=t*0.65?'warn':'crit'; }
+function fmt(n){ return '$'+Math.round(n).toLocaleString('es-MX'); }
+function pct(n){ return n.toFixed(1)+'%'; }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+
+// ============================================================
+// RENDER: RESUMEN
+// ============================================================
+function renderResumen(){
+  // Métricas por servicio (todo por trabajo, a precio Mediano)
+  const metrics=state.services.map(svc=>{
+    const cost=calcCost(svc);
+    const m=mg(svc.prices.m,cost.total);
+    const g=svc.prices.m-cost.total;      // ganancia por trabajo
+    return {svc,cost,m,g};
+  });
+
+  const nSvc=metrics.length;
+  const okCount=metrics.filter(m=>mgStatus(m.m,m.svc.tgt)==='ok').length;
+  const fixCount=nSvc-okCount;
+  const avgGan=nSvc?metrics.reduce((s,m)=>s+m.g,0)/nSvc:0;
+  const avgMg=nSvc?metrics.reduce((s,m)=>s+m.m,0)/nSvc:0;
+
+  // --- KPIs ---
+  document.getElementById('res-kpis').innerHTML=`
+    <div class="res-block">
+      <div class="res-lbl">Servicios</div>
+      <div class="res-num">${nSvc}</div>
+      <div class="res-sub">en el catálogo</div>
+    </div>
+    <div class="res-block" style="border-color:var(--green)">
+      <div class="res-lbl">Ganancia prom. / trabajo</div>
+      <div class="res-num" style="color:var(--green)">${fmt(avgGan)}</div>
+      <div class="res-sub">precio Mediano − costo</div>
+    </div>
+    <div class="res-block">
+      <div class="res-lbl">Margen promedio</div>
+      <div class="res-num" style="color:${mgColor(avgMg,40)}">${pct(avgMg)}</div>
+      <div class="res-sub">de todos los servicios</div>
+    </div>
+    <div class="res-block" style="border-color:${fixCount?'var(--red)':'var(--green)'}">
+      <div class="res-lbl">Por corregir</div>
+      <div class="res-num" style="color:${fixCount?'var(--red)':'var(--green)'}">${fixCount}</div>
+      <div class="res-sub">${okCount} bien de precio</div>
+    </div>`;
+
+  // --- Acción: servicio más crítico y cómo corregirlo ---
+  const worst=metrics.filter(m=>mgStatus(m.m,m.svc.tgt)==='crit').sort((a,b)=>a.m-b.m)[0]
+            ||metrics.filter(m=>mgStatus(m.m,m.svc.tgt)!=='ok').sort((a,b)=>a.m-b.m)[0];
+
+  let actionHtml='';
+  if(worst){
+    const f1=worst.svc.f1m||Math.round(sug(worst.cost.total,worst.svc.tgt));
+    const ganNueva=f1-worst.cost.total;
+    actionHtml=`<div class="action-box">
+      <div class="action-title">Servicio a corregir primero</div>
+      <div class="action-main">${worst.svc.name} — precio actual ${fmt(worst.svc.prices.m)} · margen <span style="color:var(--red)">${pct(worst.m)}</span></div>
+      <div class="action-sub">Subirlo a <strong>${fmt(f1)}</strong> deja una ganancia de <strong style="color:var(--green)">${fmt(ganNueva)}</strong> por trabajo (objetivo ${worst.svc.tgt}%).</div>
+    </div>`;
+  } else {
+    actionHtml=`<div class="card mb0" style="border-color:var(--green);text-align:center;padding:14px"><span class="tc-g fw7">Todos los servicios están bien de precio</span></div>`;
+  }
+  document.getElementById('res-action').innerHTML=actionHtml;
+
+  // --- Top por ganancia/trabajo y servicios a corregir ---
+  const top=[...metrics].sort((a,b)=>b.g-a.g).slice(0,5);
+  const crit=metrics.filter(m=>mgStatus(m.m,m.svc.tgt)!=='ok').sort((a,b)=>a.m-b.m).slice(0,5);
+
+  const rowSvc=(m,accent)=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px">
+      <div>
+        <div style="font-size:12px;font-weight:700">${m.svc.name}</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:2px">precio ${fmt(m.svc.prices.m)} · costo ${fmt(m.cost.total)}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:14px;font-weight:800;color:${accent}">${m.g>=0?'+':''}${fmt(m.g)}</div>
+        <div style="font-size:9px;color:${mgColor(m.m,m.svc.tgt)}">${pct(m.m)} margen</div>
+      </div>
+    </div>`;
+
+  document.getElementById('res-top').innerHTML=top.map(m=>rowSvc(m,'var(--green)')).join('') ||
+    '<div class="tc-m" style="font-size:11px;padding:8px">Sin servicios</div>';
+  document.getElementById('res-crit').innerHTML=crit.length
+    ? crit.map(m=>rowSvc(m,'var(--red)')).join('')
+    : '<div style="padding:12px;text-align:center;color:var(--green);font-size:12px;font-weight:700">Sin servicios por corregir</div>';
+}
+
+// ============================================================
+// RENDER: EQUIPO
+// ============================================================
+function renderEquipo(){
+  // Workers
+  document.getElementById('workersGrid').innerHTML=state.workers.map(w=>`
+    <div class="worker-card">
+      <div class="w-av">${w.name.charAt(0)}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700">${w.name}</div>
+        <div style="font-size:10px;color:var(--muted)">${w.role||'Técnico'}</div>
+        <div style="font-size:19px;font-weight:800;color:var(--green);margin-top:3px">${fmt(w.rate)}<span style="font-size:10px;color:var(--muted);font-weight:400">/hora</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <button class="btn btn-ghost btn-xs" onclick="editWorker(${w.id})">✏️</button>
+        ${state.workers.length>1?`<button class="btn btn-ghost btn-xs" onclick="delWorker(${w.id})">🗑</button>`:''}
+      </div>
+    </div>`).join('');
+
+  // Overhead
+  document.getElementById('overheadGrid').innerHTML=state.overhead.map((o,i)=>`
+    <div class="oh-item">
+      <div class="oh-label">${o.label}</div>
+      <input class="oh-input" type="number" value="${o.monthly}" oninput="state.overhead[${i}].monthly=parseFloat(this.value)||0;saveAndRender()">
+      <div style="font-size:9px;color:var(--muted);margin-top:2px">/mes</div>
+    </div>`).join('');
+
+  document.getElementById('jobsPerMonth').value=state.jobsPerMonth||20;
+  const tot=state.overhead.reduce((s,o)=>s+(parseFloat(o.monthly)||0),0);
+  document.getElementById('ohTotal').textContent=fmt(tot);
+  document.getElementById('ohPerJob').textContent=fmt(ohPerJob());
+
+  // Checklist
+  renderChecklist();
+}
+
+function renderChecklist(){
+  document.getElementById('checklistEl').innerHTML=(state.checklist||[]).map((c,i)=>`
+    <li class="cl-item">
+      <input type="checkbox" class="cl-check" ${c.done?'checked':''} onchange="toggleCheck(${c.id})">
+      <div style="flex:1">
+        <div class="cl-label ${c.done?'done':''}" onclick="toggleCheck(${c.id})">${c.text}</div>
+        ${c.sub?`<div class="cl-sub">${c.sub}</div>`:''}
+      </div>
+      <button class="btn btn-ghost btn-xs" onclick="delCheck(${c.id})">✕</button>
+    </li>`).join('');
+}
+
+function toggleCheck(id){ const c=state.checklist.find(c=>c.id===id); if(c){c.done=!c.done;saveState();renderChecklist();} }
+function delCheck(id){ state.checklist=state.checklist.filter(c=>c.id!==id); saveState(); renderChecklist(); }
+function addCheckItem(){
+  const text=prompt('Describe la acción:'); if(!text) return;
+  const sub=prompt('Contexto / condición (opcional):');
+  const nid=Math.max(0,...(state.checklist||[]).map(c=>c.id))+1;
+  state.checklist.push({id:nid,text,sub:sub||'',done:false});
+  saveState(); renderChecklist();
+}
+
+// ============================================================
+// RENDER: SERVICIOS
+// ============================================================
+const CAT_ORDER=['interior','exterior','adicional','combo','ceramico'];
+const CAT_LBL={interior:'Interior',exterior:'Exterior',adicional:'Adicional',combo:'Combo',ceramico:'Cerámico'};
+const CAT_CLS={interior:'cdl-int',exterior:'cdl-ext',adicional:'cdl-add',combo:'cdl-combo',ceramico:'cdl-cer'};
+const CAT_BADGE={interior:'b-g',exterior:'b-b',adicional:'b-y',combo:'b-o',ceramico:'b-p'};
+
+function renderServicios(){
+  // Filter pills
+  const allCats=['all',...CAT_ORDER];
+  document.getElementById('catFilter').innerHTML=allCats.map(c=>`
+    <div class="pill ${_activeCat===c?'active':''}" onclick="setCatFilter('${c}')">${c==='all'?'Todos':CAT_LBL[c]}</div>`).join('');
+
+  const svcs=state.services.filter(s=>_activeCat==='all'||s.cat===_activeCat);
+  let html='';
+  for(const cat of CAT_ORDER){
+    const catSvcs=svcs.filter(s=>s.cat===cat);
+    if(!catSvcs.length) continue;
+    html+=`<div class="cat-div"><span class="cat-div-label ${CAT_CLS[cat]}">${CAT_LBL[cat]}</span><div class="cat-div-line"></div></div>`;
+    html+=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-bottom:8px">`;
+    for(const svc of catSvcs){
+      const cost=calcCost(svc);
+      const mgM=mg(svc.prices.m,cost.total);
+      const color=mgColor(mgM,svc.tgt);
+      const bw=clamp(mgM,0,100);
+      const sugP=sug(cost.total,svc.tgt);
+
+      // ganancia en $ por tamaño
+      const ganancia=(k)=>{ const p=svc.prices[k]||0; return p-cost.total; };
+
+      const laborRows=(svc.labor||[]).map(l=>{
+        const w=state.workers.find(w=>w.id===l.wid); if(!w||!l.h) return '';
+        return `<div class="cost-row"><span class="cost-label">${w.name} ${l.h}h × ${fmt(w.rate)}</span><span>${fmt(w.rate*l.h)}</span></div>`;
+      }).join('');
+
+      const matDetail=(svc.mats||[]).map(m=>`<div class="mat-item"><span>${m.n}</span><span>${fmt(m.c)}</span></div>`).join('');
+
+      html+=`
+      <div class="svc-card">
+        <div class="svc-head">
+          <div style="flex:1">
+            <span class="badge ${CAT_BADGE[svc.cat]} mb4">${CAT_LBL[svc.cat]}</span>
+            <div style="font-size:13px;font-weight:700;margin-bottom:6px">${svc.name}</div>
+            ${svc.notes?`<div style="font-size:10px;color:var(--muted);margin-bottom:5px;font-style:italic">${svc.notes}</div>`:''}
+            <div class="vpg">
+              ${['c','m','s','l'].map((k,i)=>{
+                const lbl=['Compact.','Mediano ★','SUV','3 Filas'][i];
+                const hl=k==='m';
+                return `<div class="vpc ${hl?'active':''}">
+                  <div class="vpc-lbl ${hl?'hl':''}">${lbl}</div>
+                  <input class="vpc-input ${hl?'hl':''}" type="number" value="${svc.prices[k]||''}" placeholder="N/A"
+                    oninput="updPrice(${svc.id},'${k}',this.value)">
+                  ${svc.prices[k]?(()=>{const g=ganancia(k);const col=mgColor(mg(svc.prices[k],cost.total),svc.tgt);return `<div style="font-size:11px;font-weight:800;color:${col};margin-top:2px">${g>=0?'+':''}${fmt(g)}</div><div style="font-size:8px;color:${col};opacity:.7">${pct(mg(svc.prices[k],cost.total))}</div>`;})():`<div class="vpc-mg" style="color:var(--muted)">—</div>`}
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:20px">
+            <button class="btn btn-ghost btn-xs" onclick="openEditModal(${svc.id})">✏️</button>
+            <button class="btn btn-ghost btn-xs" onclick="delService(${svc.id})">🗑</button>
+          </div>
+        </div>
+        <div class="svc-body">
+          <div class="cost-row"><span class="cost-label">📦 Insumos <span style="font-size:9px">(clic)</span></span>
+            <span style="cursor:pointer;font-weight:600" onclick="toggleMats(${svc.id})">${fmt(cost.mats)} ▾</span></div>
+          <div id="mats-${svc.id}" style="display:none;background:var(--bg3);border-radius:5px;padding:7px;margin:3px 0">
+            <div>${matDetail}</div>
+          </div>
+          <div class="cost-row"><span class="cost-label">👷 Mano de obra</span><span style="font-weight:600">${fmt(cost.labor)}</span></div>
+          ${laborRows}
+          <div class="cost-row"><span class="cost-label">🏢 Overhead (×${svc.ohf||1}) = ${fmt(ohPerJob()*(svc.ohf||1))}</span><span style="font-weight:600">${fmt(cost.oh)}</span></div>
+          ${svc.amort?`<div class="cost-row"><span class="cost-label">🔧 Amort. equipo</span><span style="font-weight:600">${fmt(svc.amort)}</span></div>`:''}
+          <div class="cost-total"><span>Costo total</span><span style="font-size:14px">${fmt(cost.total)}</span></div>
+        </div>
+        <div class="svc-foot">
+          <div>
+            <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Ganancia actual (Med.)</div>
+            <div style="font-size:16px;font-weight:800;color:${mgColor(mgM,svc.tgt)}">${fmt(ganancia('m'))}</div>
+            <div style="font-size:9px;color:var(--muted)">${pct(mgM)} margen</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px">Precio sugerido (${svc.tgt}%)</div>
+            <div style="font-size:14px;font-weight:800;color:var(--green)">${fmt(sugP)}</div>
+            <div style="font-size:9px;color:var(--green)">ganancia: ${fmt(sugP-cost.total)}</div>
+          </div>
+          ${mgM<svc.tgt&&svc.f1m?`
+          <button class="btn btn-yellow btn-sm" onclick="applyF1(${svc.id})" title="Aplica Fase 1 al mediano y ajusta proporcional">
+            ⚡ Fase 1: ${fmt(svc.f1m)}
+          </button>`:`<span class="badge b-g">✓ OK</span>`}
+        </div>
+      </div>`;
+    }
+    html+=`</div>`;
+  }
+  document.getElementById('servicesContainer').innerHTML=html;
+}
+
+function setCatFilter(cat){ _activeCat=cat; renderServicios(); }
+function toggleMats(id){ const el=document.getElementById('mats-'+id); if(el)el.style.display=el.style.display==='none'?'block':'none'; }
+
+function updPrice(id,key,val){
+  const svc=state.services.find(s=>s.id===id); if(!svc) return;
+  svc.prices[key]=parseFloat(val)||0;
+  saveState();
+}
+
+function applyF1(id){
+  const svc=state.services.find(s=>s.id===id); if(!svc||!svc.f1m) return;
+  if(!confirm(`Aplicar Fase 1 a "${svc.name}"?\nMediano: ${fmt(svc.prices.m)} → ${fmt(svc.f1m)}\nCompacto y SUV se ajustarán proporcionalmente.`)) return;
+  const ratio=svc.f1m/svc.prices.m;
+  if(svc.prices.c) svc.prices.c=Math.round(svc.prices.c*ratio);
+  if(svc.prices.s) svc.prices.s=Math.round(svc.prices.s*ratio);
+  if(svc.prices.l) svc.prices.l=Math.round(svc.prices.l*ratio);
+  svc.prices.m=svc.f1m;
+  saveAndRender();
+}
+
+function delService(id){
+  if(!confirm('¿Eliminar este servicio?')) return;
+  state.services=state.services.filter(s=>s.id!==id);
+  saveAndRender();
+}
+
+// ============================================================
+// RENDER: RENTABILIDAD
+// ============================================================
+function renderRentabilidad(){
+  const metrics=state.services.map(svc=>{
+    const cost=calcCost(svc);
+    const mgM=mg(svc.prices.m,cost.total);
+    const s=mgStatus(mgM,svc.tgt);
+    const ganTrab=svc.prices.m-cost.total;
+    return {svc,cost,mgM,s,ganTrab};
+  }).sort((a,b)=>a.mgM-b.mgM);
+
+  const nSvc=metrics.length;
+  const okCount=metrics.filter(m=>m.s==='ok').length;
+  const critCount=metrics.filter(m=>m.s==='crit').length;
+  const fixCount=nSvc-okCount;
+  const avgGan=nSvc?metrics.reduce((s,m)=>s+m.ganTrab,0)/nSvc:0;
+  const avgMg=nSvc?metrics.reduce((s,m)=>s+m.mgM,0)/nSvc:0;
+
+  document.getElementById('kpiCards').innerHTML=`
+    <div class="card" style="text-align:center">
+      <div class="kpi-label">Servicios</div>
+      <div class="kpi-value">${nSvc}</div>
+      <div class="kpi-sub">en el catálogo</div>
+    </div>
+    <div class="card" style="text-align:center;border-color:var(--green)">
+      <div class="kpi-label">Ganancia prom. / trabajo</div>
+      <div class="kpi-value" style="color:var(--green)">${fmt(avgGan)}</div>
+      <div class="kpi-sub">precio Mediano − costo</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="kpi-label">Margen promedio</div>
+      <div class="kpi-value" style="color:${mgColor(avgMg,40)}">${pct(avgMg)}</div>
+      <div class="kpi-sub">de todos los servicios</div>
+    </div>
+    <div class="card" style="text-align:center;${fixCount?'border-color:var(--red)':'border-color:var(--green)'}">
+      <div class="kpi-label">Por corregir</div>
+      <div class="kpi-value" style="color:${fixCount?'var(--red)':'var(--green)'}">${fixCount}</div>
+      <div class="kpi-sub">${critCount} crítico${critCount!==1?'s':''} · ${okCount} OK</div>
+    </div>`;
+
+  // Action box — el peor margen y cómo corregirlo
+  const under=metrics.filter(m=>m.s!=='ok')[0];
+
+  if(under){
+    const f1=under.svc.f1m||Math.round(sug(under.cost.total,under.svc.tgt));
+    const ganNueva=f1-under.cost.total;
+    const f1mg=mg(f1,under.cost.total);
+    document.getElementById('actionBox').innerHTML=`
+    <div class="action-box">
+      <div class="action-title">⚡ Servicio a corregir primero</div>
+      <div class="action-main">${under.svc.name}</div>
+      <div class="action-sub">Precio actual: <strong>${fmt(under.svc.prices.m)}</strong> — Margen: <strong style="color:var(--red)">${pct(under.mgM)}</strong> — Objetivo: <strong>${under.svc.tgt}%</strong></div>
+      <div class="action-nums">
+        <div class="anum"><div class="anum-val tc-r">${fmt(under.svc.prices.m)}</div><div class="anum-lbl">Precio actual</div></div>
+        <div style="font-size:22px;font-weight:800;color:var(--muted);align-self:center">→</div>
+        <div class="anum"><div class="anum-val tc-y">${fmt(f1)}</div><div class="anum-lbl">Precio sugerido</div></div>
+        <div style="font-size:22px;font-weight:800;color:var(--muted);align-self:center">=</div>
+        <div class="anum"><div class="anum-val tc-g">${fmt(ganNueva)}</div><div class="anum-lbl">Ganancia / trabajo</div></div>
+        <div class="anum"><div class="anum-val tc-y">${pct(f1mg)}</div><div class="anum-lbl">Margen nuevo</div></div>
+      </div>
+    </div>`;
+  } else {
+    document.getElementById('actionBox').innerHTML=`<div class="card mb16" style="border-color:var(--green);text-align:center;padding:16px"><span class="tc-g fw7">✓ Todos los servicios están en rango</span></div>`;
+  }
+
+  // Ranking
+  const stMap={ok:{cls:'b-g',lbl:'✓ OK'},warn:{cls:'b-y',lbl:'⚠ Bajo'},crit:{cls:'b-r',lbl:'❌ Crítico'}};
+  document.getElementById('rankingBody').innerHTML=metrics.map((m,i)=>{
+    const color=mgColor(m.mgM,m.svc.tgt);
+    const bw=clamp(m.mgM,0,100);
+    const st=stMap[m.s];
+    return `<tr>
+      <td class="tc-m fw7">${i+1}</td>
+      <td><strong>${m.svc.name}</strong>${m.svc.notes?`<div style="font-size:10px;color:var(--muted)">${m.svc.notes}</div>`:''}</td>
+      <td style="font-weight:700">${fmt(m.svc.prices.m)}</td>
+      <td class="tc-m">${fmt(m.cost.total)}</td>
+      <td style="font-size:14px;font-weight:800;color:${m.ganTrab>=0?'var(--green)':'var(--red)'}">${m.ganTrab>=0?'+':''}${fmt(m.ganTrab)}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="width:50px"><div class="prog"><div class="prog-fill" style="width:${bw}%;background:${color}"></div></div></div>
+          <span style="font-weight:700;color:${color};font-size:11px">${pct(m.mgM)}</span>
+        </div>
+      </td>
+      <td style="color:var(--green);font-weight:700">${fmt(sug(m.cost.total,m.svc.tgt))}</td>
+      <td><span class="badge ${st.cls}">${st.lbl}</span></td>
+    </tr>`;
+  }).join('');
+
+}
+
+// ============================================================
+// EXPORT / IMPORT
+// ============================================================
+function exportJSON(){
+  const data=JSON.stringify(state,null,2);
+  const blob=new Blob([data],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`vam_costos_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+function importJSON(evt){
+  const file=evt.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const parsed=JSON.parse(e.target.result);
+      if(!parsed.services||!parsed.workers) throw new Error('Formato inválido');
+      if(!confirm('¿Reemplazar todos los datos actuales con el archivo importado?')) return;
+      state=parsed;
+      saveAndRender();
+      alert('Datos importados correctamente.');
+    }catch(err){ alert('Error al importar: '+err.message); }
+  };
+  reader.readAsText(file);
+  evt.target.value='';
+}
+
+// ============================================================
+// WORKER MODAL
+// ============================================================
+function openWorkerModal(){_editWorkerId=null;document.getElementById('wModalTitle').textContent='Agregar técnico';document.getElementById('wm-name').value='';document.getElementById('wm-rate').value='';document.getElementById('wm-role').value='';document.getElementById('wModal').classList.add('open');}
+function editWorker(id){_editWorkerId=id;const w=state.workers.find(w=>w.id===id);document.getElementById('wModalTitle').textContent='Editar técnico';document.getElementById('wm-name').value=w.name;document.getElementById('wm-rate').value=w.rate;document.getElementById('wm-role').value=w.role||'';document.getElementById('wModal').classList.add('open');}
+function saveWorker(){
+  const name=document.getElementById('wm-name').value.trim();if(!name)return;
+  const rate=parseFloat(document.getElementById('wm-rate').value)||0;
+  const role=document.getElementById('wm-role').value.trim();
+  if(_editWorkerId){const w=state.workers.find(w=>w.id===_editWorkerId);if(w){w.name=name;w.rate=rate;w.role=role;}}
+  else{const nid=Math.max(0,...state.workers.map(w=>w.id))+1;state.workers.push({id:nid,name,rate,role});}
+  closeModal('wModal');saveAndRender();
+}
+function delWorker(id){if(!confirm('¿Eliminar técnico?'))return;state.workers=state.workers.filter(w=>w.id!==id);saveAndRender();}
+
+// ============================================================
+// SERVICE MODAL (add)
+// ============================================================
+function openServiceModal(){document.getElementById('sm-name').value='';document.getElementById('sm-pc').value='';document.getElementById('sm-pm').value='';document.getElementById('sm-ps').value='';document.getElementById('sm-pl').value='';document.getElementById('sm-tgt').value='45';document.getElementById('sm-f1').value='';document.getElementById('sm-oh').value='1';document.getElementById('sModal').classList.add('open');}
+function saveService(){
+  const name=document.getElementById('sm-name').value.trim();if(!name)return;
+  const nid=Math.max(0,...state.services.map(s=>s.id))+1;
+  state.services.push({id:nid,name,cat:document.getElementById('sm-cat').value,
+    prices:{c:parseFloat(document.getElementById('sm-pc').value)||0,m:parseFloat(document.getElementById('sm-pm').value)||0,s:parseFloat(document.getElementById('sm-ps').value)||0,l:parseFloat(document.getElementById('sm-pl').value)||0},
+    tgt:parseFloat(document.getElementById('sm-tgt').value)||45,f1m:parseFloat(document.getElementById('sm-f1').value)||0,
+    ohf:parseFloat(document.getElementById('sm-oh').value)||1,vol:1,amort:0,notes:'',
+    mats:[],labor:state.workers.map(w=>({wid:w.id,h:0}))});
+  closeModal('sModal');saveAndRender();
+}
+
+// ============================================================
+// EDIT SERVICE MODAL
+// ============================================================
+function openEditModal(id){
+  _editSvcId=id;
+  const svc=state.services.find(s=>s.id===id);
+  document.getElementById('eModalTitle').textContent='Editar: '+svc.name;
+  document.getElementById('em-name').value=svc.name;
+  document.getElementById('em-cat').value=svc.cat;
+  document.getElementById('em-amort').value=svc.amort||0;
+  document.getElementById('em-ohf').value=svc.ohf||1;
+  document.getElementById('em-tgt').value=svc.tgt||45;
+  document.getElementById('em-f1').value=svc.f1m||0;
+  document.getElementById('em-pc').value=svc.prices.c||0;
+  document.getElementById('em-pm').value=svc.prices.m||0;
+  document.getElementById('em-ps').value=svc.prices.s||0;
+  document.getElementById('em-pl').value=svc.prices.l||0;
+  document.getElementById('em-notes').value=svc.notes||'';
+  document.getElementById('em-labor-rows').innerHTML=state.workers.map(w=>{
+    const e=(svc.labor||[]).find(l=>l.wid===w.id);
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <span style="min-width:75px;font-size:12px;font-weight:700">${w.name}</span>
+      <span style="font-size:11px;color:var(--muted)">${fmt(w.rate)}/hr</span>
+      <input type="number" class="en" id="em-labor-${w.id}" value="${e?e.h:0}" step="0.5" min="0">
+      <span style="font-size:11px;color:var(--muted)">horas</span>
+    </div>`;
+  }).join('');
+  _editMatRows=(svc.mats||[]).map(m=>({...m}));
+  renderMatRows();
+  document.getElementById('eModal').classList.add('open');
+}
+
+function renderMatRows(){
+  document.getElementById('em-mat-rows').innerHTML=_editMatRows.map((m,i)=>`
+    <div class="mat-row">
+      <input class="mn" type="text" placeholder="Nombre del insumo" value="${m.n||''}" oninput="_editMatRows[${i}].n=this.value">
+      <input class="mc" type="number" placeholder="$" value="${m.c||''}" oninput="_editMatRows[${i}].c=parseFloat(this.value)||0">
+      <button class="btn btn-ghost btn-xs" onclick="_editMatRows.splice(${i},1);renderMatRows()">✕</button>
+    </div>`).join('');
+}
+function addMatRow(){_editMatRows.push({n:'',c:0});renderMatRows();}
+
+function saveEditService(){
+  const svc=state.services.find(s=>s.id===_editSvcId);if(!svc)return;
+  svc.name=document.getElementById('em-name').value.trim()||svc.name;
+  svc.cat=document.getElementById('em-cat').value;
+  svc.amort=parseFloat(document.getElementById('em-amort').value)||0;
+  svc.ohf=parseFloat(document.getElementById('em-ohf').value)||1;
+  svc.tgt=parseFloat(document.getElementById('em-tgt').value)||45;
+  svc.f1m=parseFloat(document.getElementById('em-f1').value)||0;
+  svc.prices.c=parseFloat(document.getElementById('em-pc').value)||0;
+  svc.prices.m=parseFloat(document.getElementById('em-pm').value)||0;
+  svc.prices.s=parseFloat(document.getElementById('em-ps').value)||0;
+  svc.prices.l=parseFloat(document.getElementById('em-pl').value)||0;
+  svc.notes=document.getElementById('em-notes').value.trim();
+  svc.labor=state.workers.map(w=>({wid:w.id,h:parseFloat(document.getElementById('em-labor-'+w.id)?.value)||0}));
+  svc.mats=_editMatRows.filter(m=>m.n);
+  closeModal('eModal');saveAndRender();
+}
+
+// ============================================================
+// TABS & UTILS
+// ============================================================
+let _activeTab='resumen';
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  _activeTab=name;
+  renderActive();
+}
+
+function renderActive(){
+  if(_activeTab==='resumen') renderResumen();
+  else if(_activeTab==='equipo') renderEquipo();
+  else if(_activeTab==='servicios') renderServicios();
+  else if(_activeTab==='rentabilidad') renderRentabilidad();
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+// ============================================================
+// INIT
+// ============================================================
+updateSaveBadge();
+renderResumen();
+</script>
+</body>
+</html>

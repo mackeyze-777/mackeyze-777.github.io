@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Documentos · VAM Garage</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e8178a'/><text x='50' y='72' font-size='64' font-family='system-ui' font-weight='900' text-anchor='middle' fill='%23050505'>V</text></svg>">
+<style>
+:root{--bg:#050505;--panel:#0c0c0c;--panel2:#131313;--line:#1e1e1e;--line2:#2c2c2c;--txt:#f0f0f0;--muted:#808490;--accent:#e8178a;--accent2:#ff4fae}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.65}
+a{color:var(--accent2);text-decoration:none}
+a:hover{text-decoration:underline}
+header{position:sticky;top:0;z-index:10;background:rgba(5,5,5,.9);backdrop-filter:blur(10px);border-top:3px solid var(--accent);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;height:56px;padding:0 18px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:1px;font-size:14px;color:var(--txt)}
+.logo .tile{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#050505;font-weight:900}
+.back{margin-left:auto;font-size:13px;color:var(--muted)}
+.layout{display:grid;grid-template-columns:240px 1fr;gap:0;max-width:1100px;margin:0 auto}
+nav{border-right:1px solid var(--line);padding:22px 14px;position:sticky;top:56px;height:calc(100vh - 56px);overflow:auto}
+nav .lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:0 0 10px 8px}
+nav a{display:block;color:var(--txt);font-size:13.5px;padding:8px 10px;border-radius:8px;margin-bottom:2px}
+nav a:hover{background:var(--panel2);text-decoration:none}
+nav a.active{background:rgba(232,23,138,.14);color:var(--accent2);font-weight:600}
+main{padding:34px 30px 80px;min-width:0}
+.doc h1{font-size:28px;font-weight:900;margin:0 0 18px;letter-spacing:-.3px}
+.doc h2{font-size:21px;font-weight:800;margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.doc h3{font-size:16.5px;font-weight:700;margin:22px 0 8px;color:var(--accent2)}
+.doc h4{font-size:14px;font-weight:700;margin:16px 0 6px}
+.doc p{margin:10px 0;color:#dcdce0}
+.doc ul,.doc ol{margin:10px 0 10px 22px;color:#dcdce0}
+.doc li{margin:5px 0}
+.doc code{background:var(--panel2);border:1px solid var(--line2);border-radius:5px;padding:1px 6px;font-size:12.5px;font-family:ui-monospace,Menlo,monospace;color:var(--accent2)}
+.doc pre{background:var(--panel2);border:1px solid var(--line2);border-radius:10px;padding:14px 16px;overflow:auto;margin:14px 0}
+.doc pre code{background:none;border:none;padding:0;color:#dcdce0}
+.doc blockquote{border-left:3px solid var(--accent);background:var(--panel);padding:8px 16px;margin:14px 0;border-radius:0 8px 8px 0;color:var(--muted)}
+.doc hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+.doc strong{color:var(--txt)}
+.doc table{border-collapse:collapse;margin:14px 0;font-size:13.5px;width:100%}
+.doc th,.doc td{border:1px solid var(--line2);padding:8px 12px;text-align:left}
+.doc th{background:var(--panel2)}
+.menu-btn{display:none;background:var(--panel2);border:1px solid var(--line2);color:var(--txt);border-radius:8px;padding:6px 10px;font-size:18px;cursor:pointer}
+@media(max-width:760px){
+  .layout{grid-template-columns:1fr}
+  nav{position:fixed;top:56px;left:0;width:240px;background:var(--bg);z-index:9;transform:translateX(-105%);transition:.2s}
+  nav.open{transform:none}
+  .menu-btn{display:block}
+  main{padding:24px 18px 70px}
+}
+</style>
+</head>
+<body>
+<header>
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <a class="logo" href="../"><span class="tile">V</span>VAM · Documentos</a>
+  <a class="back" href="../">← Centro de Control</a>
+</header>
+<div class="layout">
+  <nav id="nav">
+    <div class="lbl">Documentos</div>
+    <div id="navlist"></div>
+  </nav>
+  <main><div class="doc" id="doc">Cargando…</div></main>
+</div>
+<script>
+const DOCS=[
+  {id:'sistema',t:'Sistema completo',f:'sistema.md'},
+  {id:'cotizador-logica',t:'Lógica del Cotizador',f:'cotizador-logica.md'},
+  {id:'vacante-tecnico',t:'Vacante · Técnico',f:'vacante-tecnico.md'},
+  {id:'plan-contenido',t:'Plan de Contenido',f:'plan-contenido.md'},
+  {id:'blueprint',t:'Blueprint',f:'blueprint.md'},
+  {id:'costos-contexto',t:'Contexto de Costos',f:'costos-contexto.md'},
+];
+const navlist=document.getElementById('navlist');
+DOCS.forEach(d=>{const a=document.createElement('a');a.href='#'+d.id;a.textContent=d.t;a.id='nav-'+d.id;navlist.appendChild(a)});
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function inline(s){
+  return s
+    .replace(/`([^`]+)`/g,(m,c)=>'<code>'+esc(c)+'</code>')
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g,'<em>$1</em>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+function md(src){
+  const lines=src.replace(/\r/g,'').split('\n');let html='',i=0;
+  const tags=[]; // open list stack
+  function closeLists(){while(tags.length){html+='</'+tags.pop()+'>'}}
+  while(i<lines.length){
+    let l=lines[i];
+    if(/^```/.test(l)){closeLists();let buf=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){buf.push(lines[i]);i++}html+='<pre><code>'+esc(buf.join('\n'))+'</code></pre>';i++;continue}
+    if(/^\s*$/.test(l)){closeLists();i++;continue}
+    if(/^#{1,4}\s/.test(l)){closeLists();const n=l.match(/^#+/)[0].length;html+='<h'+n+'>'+inline(esc(l.replace(/^#+\s/,'')))+'</h'+n+'>';i++;continue}
+    if(/^\s*>/.test(l)){closeLists();let buf=[];while(i<lines.length&&/^\s*>/.test(lines[i])){buf.push(lines[i].replace(/^\s*>\s?/,''));i++}html+='<blockquote>'+inline(esc(buf.join(' ')))+'</blockquote>';continue}
+    if(/^\s*([-*+])\s/.test(l)){if(tags[tags.length-1]!=='ul'){closeLists();tags.push('ul');html+='<ul>'}html+='<li>'+inline(esc(l.replace(/^\s*[-*+]\s/,'')))+'</li>';i++;continue}
+    if(/^\s*\d+\.\s/.test(l)){if(tags[tags.length-1]!=='ol'){closeLists();tags.push('ol');html+='<ol>'}html+='<li>'+inline(esc(l.replace(/^\s*\d+\.\s/,'')))+'</li>';i++;continue}
+    if(/^\s*[-*_]{3,}\s*$/.test(l)){closeLists();html+='<hr>';i++;continue}
+    if(/^\s*\|.*\|/.test(l)){closeLists();let rows=[];while(i<lines.length&&/^\s*\|.*\|/.test(lines[i])){rows.push(lines[i]);i++}
+      let out='<table>';rows.forEach((r,ri)=>{if(/^\s*\|[\s:|-]+\|\s*$/.test(r))return;const cells=r.trim().replace(/^\||\|$/g,'').split('|');const tag=ri===0?'th':'td';out+='<tr>'+cells.map(c=>'<'+tag+'>'+inline(esc(c.trim()))+'</'+tag+'>').join('')+'</tr>'});out+='</table>';html+=out;continue}
+    closeLists();let buf=[l];i++;while(i<lines.length&&!/^\s*$/.test(lines[i])&&!/^(#{1,4}\s|```|\s*[-*+]\s|\s*\d+\.\s|\s*>|\s*\|)/.test(lines[i])){buf.push(lines[i]);i++}
+    html+='<p>'+inline(esc(buf.join(' ')))+'</p>';
+  }
+  closeLists();return html;
+}
+
+async function load(id){
+  const d=DOCS.find(x=>x.id===id)||DOCS[0];
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  const na=document.getElementById('nav-'+d.id);if(na)na.classList.add('active');
+  const el=document.getElementById('doc');el.textContent='Cargando…';
+  try{const r=await fetch(d.f);if(!r.ok)throw 0;el.innerHTML=md(await r.text());}
+  catch(e){el.innerHTML='<h1>No se pudo cargar</h1><p>El documento <code>'+d.f+'</code> no está disponible.</p>';}
+  window.scrollTo(0,0);document.getElementById('nav').classList.remove('open');
+}
+window.addEventListener('hashchange',()=>load(location.hash.slice(1)));
+document.getElementById('menuBtn').onclick=()=>document.getElementById('nav').classList.toggle('open');
+load(location.hash.slice(1)||'sistema');
+</script>
+</body>
+</html>

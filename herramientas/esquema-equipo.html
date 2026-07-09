@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>VAM Garage — Esquema del Equipo: Trabajos, Bonos, Responsabilidad y Garantías</title>
+<!-- Diseño NUEVO por ROLES (jul-2026). No hereda los esquemas anteriores armados por persona.
+     Bonos definidos: todos $100 flat (decisión del dueño, 8-jul). La base garantizada se fija en el contrato de cada trabajador.
+     Sistema APEX · imprimible. -->
+<style>
+:root{--pink:#e8178a;--night:#050505;--ok:#1a7a44;--warn:#a35a00;--bad:#b3261e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#333;font-family:system-ui,-apple-system,sans-serif;padding:20px 10px 60px;-webkit-font-smoothing:antialiased}
+.topbar{max-width:860px;margin:0 auto 14px;display:flex;justify-content:flex-end}
+.btn{min-height:42px;background:var(--pink);border:0;color:#050505;font:inherit;font-size:14px;font-weight:800;padding:0 20px;border-radius:999px;cursor:pointer}
+.sheet{max-width:860px;margin:0 auto;background:#fff;color:#16181d;border-radius:12px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+.band{height:8px;background:var(--pink)}
+.head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px 32px 0}
+.brand{display:flex;gap:13px;align-items:center}
+.mark{width:48px;height:48px;border-radius:10px;background:var(--night);color:var(--pink);display:grid;place-items:center;font-weight:800;font-size:25px}
+.name{font-weight:800;font-size:17px;letter-spacing:4px}
+.subt{font-size:9.5px;color:#8a8d96;letter-spacing:1.8px;text-transform:uppercase;margin-top:3px}
+.doc-t{font-weight:800;font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--pink);text-align:right}
+.title{padding:20px 32px 4px}
+.title h1{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.title p{font-size:13px;color:#5a5e66;margin-top:8px;line-height:1.55;max-width:70ch}
+.title p b{color:#16181d}
+
+.sec{display:flex;align-items:center;gap:10px;margin:24px 32px 10px}
+.sec-n{width:24px;height:24px;border-radius:7px;background:var(--pink);color:#fff;font-weight:800;font-size:12.5px;display:grid;place-items:center;flex-shrink:0}
+.sec h2{font-weight:800;font-size:15.5px;text-transform:uppercase;letter-spacing:.5px}
+.sec .hint{font-size:10px;color:#9a9da4;margin-left:auto;text-transform:uppercase;letter-spacing:.3px;text-align:right}
+
+.tblwrap{padding:0 32px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{background:#f4f5f7;color:#5a5e66;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:800;padding:8px 9px;border-bottom:1.4px solid #dfe1e5;white-space:nowrap}
+td{padding:8px 9px;border-bottom:1px solid #edeef1;vertical-align:top;line-height:1.4;color:#2c2f36}
+tr:last-child td{border-bottom:0}
+.cat-g{font-weight:800;color:#16181d;white-space:nowrap}
+.blank{display:inline-block;min-width:70px;border-bottom:1.6px solid #16181d;text-align:center;font-weight:800;color:#16181d;padding:0 4px}
+.amt{font-weight:800;color:#16181d;font-size:13px}
+.sug{color:#9a9da4;font-size:10px;font-style:italic;white-space:nowrap}
+.pill{display:inline-block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding:3px 8px;border-radius:5px;white-space:nowrap}
+.p-g{background:#fdeef6;color:#a31368;border:1px solid #f0c3dc}
+.p-m{background:#fdf3e2;color:var(--warn);border:1px solid #f0d6a8}
+.p-c{background:#eef1f4;color:#5a5e66;border:1px solid #dfe1e5}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;padding:4px 32px 0}
+.card{border:1.5px solid #e6e7ea;border-radius:12px;padding:14px 16px}
+.card h3{font-size:13px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.card li{list-style:none;padding:5px 0 5px 20px;position:relative;font-size:12px;color:#3c4046;line-height:1.5}
+.card li::before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+.card.laddder li::before{content:counter(step);counter-increment:step}
+
+.ladder{padding:4px 32px 0;counter-reset:step}
+.step{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed #e6e7ea}
+.step:last-child{border-bottom:0}
+.step .n{counter-increment:step;flex-shrink:0;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:12px;color:#fff}
+.step .n::before{content:counter(step)}
+.s1 .n{background:#7cb894}.s2 .n{background:#d9a441}.s3 .n{background:#d97c41}.s4 .n{background:var(--bad)}
+.step b{font-size:12.5px;display:block}
+.step span{font-size:11.5px;color:#5a5e66;line-height:1.45;display:block;margin-top:2px}
+
+.gold-rule{margin:18px 32px 0;padding:12px 16px;background:#fdeef6;border:1.5px solid var(--pink);border-radius:10px;font-size:12px;color:#4a2038;line-height:1.55}
+.gold-rule b{color:#a31368}
+.note{margin:14px 32px 0;padding:10px 14px;background:#f6f7f9;border:1px solid #e6e7ea;border-radius:9px;font-size:11px;color:#6a6e76;line-height:1.5}
+.sign{display:grid;grid-template-columns:1fr 1fr;gap:26px;padding:26px 32px 12px}
+.sg-line{border-bottom:1.5px solid #16181d;height:32px}
+.sign span{font-size:9.5px;color:#777;font-weight:700;display:block;margin-top:7px;text-transform:uppercase;letter-spacing:.5px}
+.foot{padding:12px 32px 24px;border-top:1px solid #eef0f2;margin-top:10px;font-size:9.5px;color:#a2a5ac;line-height:1.5}
+@media print{
+  body{background:#fff;padding:0}
+  .topbar{display:none}
+  .sheet{box-shadow:none;border-radius:0;max-width:none}
+  .band,.mark,.sec-n,.doc-t,.pill,.step .n,.gold-rule{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{margin:11mm}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><button class="btn" onclick="window.print()">🖨️ Imprimir</button></div>
+<div class="sheet">
+  <div class="band"></div>
+  <div class="head">
+    <div class="brand"><div class="mark">V</div><div><div class="name">VAM GARAGE</div><div class="subt">Estudio automotriz premium · Pachuca</div></div></div>
+    <div class="doc-t">Esquema del Equipo<br>v2 · por roles</div>
+  </div>
+  <div class="title">
+    <h1>Cómo se gana, cómo se responde<br>y qué garantizamos</h1>
+    <p>Diseño nuevo por <b>roles</b> (jul-2026) — aplica a quien ocupe el puesto, no a una persona. Aquí no hay castigos: hay <b>metas con premio</b> y <b>responsabilidad con consecuencias claras</b>. <b>Cada bono vale $100</b> — simple y parejo. La base garantizada de cada quien se fija en su contrato individual.</p>
+  </div>
+
+  <!-- ═══ 1. CLASIFICACIÓN DE TRABAJOS ═══ -->
+  <div class="sec"><span class="sec-n">1</span><h2>Esquema de servicios y trabajos</h2><span class="hint">Todo trabajo cae en UNA categoría<br>— de aquí salen bonos y tiempos</span></div>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Categoría</th><th>Servicios que incluye</th><th>Duración típica</th><th>Quién lo ejecuta</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="pill p-g">GRANDE</span></td>
+        <td>Cerámicos (Escudo, Armadura, Titán, Mate) · Cirugía de Pintura (corrección 2 pasos) · Transformación Total (paquete) · PPF</td>
+        <td>6 – 11 h</td>
+        <td>Técnico certificado (o dueño durante la certificación)</td>
+      </tr>
+      <tr>
+        <td><span class="pill p-m">MEDIANO</span></td>
+        <td>Efecto Showroom (pulido + encerado) · Showroom Express (3-en-1) · Interior Cero KM · Interior Fresh (vestiduras mantenimiento)</td>
+        <td>3 – 6 h</td>
+        <td>Técnico (certificado o en entrenamiento supervisado)</td>
+      </tr>
+      <tr>
+        <td><span class="pill p-c">CHICO</span></td>
+        <td>Lavado Técnico · Sala de Máquinas (motor) · Visión Nueva (faros) · Sello Express (cera + descontaminación) · Ruedas y llantas</td>
+        <td>1 – 2 h</td>
+        <td>Cualquier técnico / apoyo</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <div class="note">Un trabajo "cuenta" cuando está <b>terminado, aprobado en su Hoja de Control y entregado sin observaciones</b>. Trabajo con retrabajo = todavía no cuenta.</div>
+
+  <!-- ═══ 2. BONOS ═══ -->
+  <div class="sec"><span class="sec-n">2</span><h2>Esquema de bonos — se gana por producir bien</h2><span class="hint">Base fija segura + bono variable<br>por trabajo aprobado</span></div>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Concepto</th><th>Condición para ganarlo</th><th>Monto</th></tr></thead>
+    <tbody>
+      <tr><td class="cat-g">Base garantizada mensual</td><td>Asistencia y puntualidad — se paga aunque no entren autos (seguridad del técnico)</td><td><span class="blank">$_____</span> <span class="sug">se fija en el contrato de cada trabajador</span></td></tr>
+      <tr><td class="cat-g">Bono por trabajo GRANDE</td><td>Terminado + aprobado en Hoja de Control + en tiempo</td><td><b class="amt">$100</b></td></tr>
+      <tr><td class="cat-g">Bono por trabajo MEDIANO</td><td>Terminado + aprobado + en tiempo</td><td><b class="amt">$100</b></td></tr>
+      <tr><td class="cat-g">Bono por trabajo CHICO</td><td>Terminado + aprobado</td><td><b class="amt">$100</b></td></tr>
+      <tr><td class="cat-g">Bono de certificación</td><td>Pasar el camino de 4 semanas del Manual (examen + servicio completo sin correcciones) — una sola vez</td><td><b class="amt">$100</b></td></tr>
+      <tr><td class="cat-g">Bono cerámico solo</td><td>Cerámico grande ejecutado de inicio a fin por el técnico certificado, sin intervención del dueño</td><td><b class="amt">$100</b></td></tr>
+      <tr><td class="cat-g">Meta de calidad mensual</td><td>Mes completo con CERO retrabajos y CERO incidentes del técnico</td><td><b class="amt">$100</b></td></tr>
+      <tr><td class="cat-g">Meta de equipo mensual</td><td>El taller entrega <span class="blank" style="min-width:40px">___</span> trabajos en el mes (todos aprobados)</td><td><b class="amt">$100</b></td></tr>
+    </tbody>
+  </table></div>
+  <div class="gold-rule"><b>Las 3 reglas del bono:</b> ① Todo bono vale <b>$100</b> y se gana con trabajo APROBADO — no con trabajo "hecho". ② Se suma cada semana y se paga con la quincena. ③ No se anda auditando: si el trabajo calificó, se suma; si no, no pasa nada — el bono nunca se descuenta. <b>El sueldo de ley no se toca jamás.</b></div>
+
+  <!-- ═══ 3. RESPONSABILIDAD ═══ -->
+  <div class="sec"><span class="sec-n">3</span><h2>Escalera de responsabilidad — no hay castigos, hay consecuencias</h2><span class="hint">Progresiva · documentada<br>· conforme a la ley</span></div>
+  <div class="ladder">
+    <div class="step s1"><span class="n"></span><div><b>Nivel 1 — Se corrige en el momento</b><span>El trabajo no pasa la Hoja de Control → se corrige ANTES de entregar, por quien lo generó. El retrabajo no genera bono. No pasa nada más: corregir a tiempo es parte del oficio.</span></div></div>
+    <div class="step s2"><span class="n"></span><div><b>Nivel 2 — Se registra</b><span>Retardo, celular en el trabajo, no seguir el SOP, faltar sin avisar, no llenar la Hoja de Control → queda registrado con fecha. El registro es información, no drama. 3 registros en el mes = pasa a Nivel 3.</span></div></div>
+    <div class="step s3"><span class="n"></span><div><b>Nivel 3 — Amonestación por escrito</b><span>Se platica de frente, se firma el acta de amonestación y se define el compromiso concreto de mejora con fecha. Aquí también se pierde la Meta de Calidad del mes.</span></div></div>
+    <div class="step s4"><span class="n"></span><div><b>Nivel 4 — Acta y decisión</b><span>Reincidencia documentada, daño por negligencia grave, deshonestidad u ocultar un incidente → acta circunstanciada y decisión conforme a la Ley Federal del Trabajo. Siempre se paga lo que corresponde por ley.</span></div></div>
+  </div>
+  <div class="note"><b>Incidentes (golpe, rayón, daño):</b> reportarlo DE INMEDIATO no genera consecuencia por el reporte — ocultarlo sí (directo a Nivel 4). El costo de un daño NUNCA se descuenta del sueldo (es ilegal); se documenta en acta y cuenta para la evaluación.</div>
+
+  <!-- ═══ 4. GARANTÍAS ═══ -->
+  <div class="sec"><span class="sec-n">4</span><h2>Garantías — qué prometemos y quién responde</h2><span class="hint">Lo que el cliente compra<br>además del servicio</span></div>
+  <div class="grid2">
+    <div class="card">
+      <h3>🛡️ Al cliente</h3>
+      <li><b>Satisfacción 48 h:</b> cualquier observación en las primeras 48 h tras la entrega se corrige sin costo y sin discusión.</li>
+      <li><b>Cerámicos:</b> garantía por escrito según paquete (1 / 2 / 3 / 5 años) con certificado firmado — vigente si el cliente cumple sus mantenimientos.</li>
+      <li><b>Evidencia siempre:</b> fotos de recepción y de entrega en cada servicio. Sin sorpresas en ningún lado.</li>
+      <li><b>Cotización cerrada:</b> el precio por escrito no cambia a media faena; lo que aparezca extra se cotiza aparte y se autoriza antes.</li>
+    </div>
+    <div class="card">
+      <h3>🔧 Dentro del taller</h3>
+      <li><b>Quien lo generó, lo corrige:</b> el retrabajo lo ejecuta el técnico del trabajo original, sin bono por ese trabajo.</li>
+      <li><b>La garantía la honra el taller</b> ante el cliente siempre — la conversación interna viene después, por la escalera.</li>
+      <li><b>Garantía de un trabajo certificado:</b> los cerámicos solo los firma (Hoja de Control) el técnico certificado o el dueño.</li>
+      <li><b>El estándar es el juez:</b> "cero observaciones bajo luz, orgulloso de publicarlo y cobrar el 100%". No es opinión: es el checklist.</li>
+    </div>
+  </div>
+
+  <div class="sign">
+    <div><div class="sg-line"></div><span>Técnico — nombre y firma</span></div>
+    <div><div class="sg-line"></div><span>Dirección VAM Garage</span></div>
+  </div>
+  <div class="foot">VAM Garage · Pachuca, Hidalgo · Documento interno v2 (por roles) · jul-2026 · Este esquema sustituye cualquier versión anterior armada por persona. Complementa el Reglamento Interior y el Contrato Individual (app de Contratos) — validar montos y actas con contador/abogado. Los bonos son adicionales al salario; nunca lo sustituyen.</div>
+</div>
+</body>
+</html>
