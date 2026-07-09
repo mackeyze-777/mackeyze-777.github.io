@@ -18,6 +18,8 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 
 header{position:sticky;top:0;z-index:50;background:rgba(5,5,5,.86);backdrop-filter:blur(12px);border-top:3px solid var(--accent);border-bottom:1px solid var(--line)}
@@ -42,7 +44,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(5,5,5,.86);backdrop-filt
 .stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
 
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin:34px 0 8px;position:sticky;top:63px;z-index:40;background:linear-gradient(var(--bg),var(--bg) 70%,transparent);padding:12px 0}
-.pill{font-size:12.5px;font-weight:600;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;transition:.15s}
+.pill{display:inline-flex;align-items:center;min-height:40px;font-size:12.5px;font-weight:600;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;transition:color .15s ease,border-color .15s ease}
 .pill:hover{color:var(--txt);border-color:var(--line2)}
 
 section{margin-top:38px;scroll-margin-top:130px}
@@ -52,10 +54,12 @@ section{margin-top:38px;scroll-margin-top:130px}
 .sec-head .count{margin-left:auto;color:var(--muted);font-size:12px;font-weight:600}
 .sec-sub{color:var(--muted);font-size:13px;margin-top:-8px;margin-bottom:16px}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.card{position:relative;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;transition:.16s}
-.card:hover{border-color:var(--accent);transform:translateY(-2px);background:var(--panel2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{position:relative;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;transition:transform .18s ease-out,background .18s ease,border-color .18s ease}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);background:var(--panel2)}
+.card:focus-within{border-color:var(--accent);background:var(--panel2)}
 .cardlink{position:absolute;inset:0;z-index:1;border-radius:14px}
+.cardlink:focus-visible{outline-offset:-2px}
 .card>*:not(.cardlink){position:relative;z-index:2;pointer-events:none}
 .card .foot a{pointer-events:auto}
 .card .top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
@@ -72,8 +76,8 @@ section{margin-top:38px;scroll-margin-top:130px}
 .b-doc{background:rgba(128,132,144,.14);color:var(--muted);border:1px solid rgba(128,132,144,.3)}
 .card .go{margin-left:auto;color:var(--accent2);font-weight:700;font-size:13px}
 .card:hover .go{color:var(--accent)}
-.repo{font-size:11px;color:var(--muted);opacity:.7}
-.repo:hover{color:var(--accent2);opacity:1;text-decoration:underline}
+.repo{display:inline-flex;align-items:center;min-height:24px;font-size:11.5px;color:#9aa0ac}
+.repo:hover{color:var(--accent2);text-decoration:underline}
 
 .noresult{display:none;color:var(--muted);text-align:center;padding:40px;font-size:14px}
 footer{margin:60px 0 40px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
