@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Rutinas del Taller · VAM Garage</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e8178a'/><text x='50' y='72' font-size='64' font-family='system-ui' font-weight='900' text-anchor='middle' fill='%23050505'>V</text></svg>">
+<style>
+:root{--bg:#050505;--panel:#0c0c0c;--panel2:#131313;--line:#1e1e1e;--line2:#2c2c2c;--txt:#f0f0f0;--muted:#808490;--accent:#e8178a;--accent2:#ff4fae;--green:#27c76f;--amber:#f0a500;--red:#e04040}
+*{box-sizing:border-box;margin:0;padding:0;min-width:0}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent2);outline-offset:2px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+
+header{position:sticky;top:0;z-index:20;background:rgba(5,5,5,.9);backdrop-filter:blur(12px);border-top:3px solid var(--accent);border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;gap:12px;height:56px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.5px;font-size:14px}
+.logo .tile{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#050505;font-weight:900}
+.logo small{display:block;color:var(--muted);font-weight:600;letter-spacing:1.5px;font-size:9px;text-transform:uppercase}
+.hbtns{margin-left:auto;display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:40px;background:var(--panel2);border:1px solid var(--line2);color:var(--txt);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:border-color .15s ease}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.back{font-size:13px;color:var(--muted)}
+.back:hover{color:var(--txt)}
+
+.top{padding:28px 0 8px}
+.eyebrow{color:var(--accent2);font-weight:700;letter-spacing:2.5px;text-transform:uppercase;font-size:10.5px;margin-bottom:8px}
+h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-height:1.05}
+.lead{color:#c8ccd4;font-size:15px;margin-top:10px;max-width:640px}
+.note{margin:16px 0 0;background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.3);border-radius:12px;padding:10px 14px;font-size:13px;color:#e8c37a}
+
+.phase{margin:32px 0 0}
+.ph-head{display:flex;align-items:center;gap:12px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:16px}
+.ph-head .ico{font-size:22px}
+.ph-head h2{font-size:20px;font-weight:800;letter-spacing:-.2px}
+.ph-head .t{margin-left:auto;font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.role{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.role h3{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800;margin-bottom:4px}
+.role .who{font-size:11.5px;color:var(--muted);margin-bottom:12px}
+.chk{list-style:none;display:flex;flex-direction:column;gap:8px}
+.chk li{display:flex;gap:10px;align-items:flex-start;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font-size:13.5px;color:#dcdce0}
+.chk .box{flex:none;width:17px;height:17px;margin-top:2px;border:2px solid var(--line2);border-radius:5px}
+.chk li b{color:var(--txt)}
+.chk li .app{display:inline-block;font-size:11px;font-weight:700;color:var(--accent2);background:rgba(232,23,138,.1);border:1px solid rgba(232,23,138,.25);border-radius:6px;padding:0 7px;margin-left:4px;white-space:nowrap}
+.chk li.key{border-color:rgba(232,23,138,.35)}
+.regla{margin-top:12px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line2);padding-top:10px}
+.regla b{color:var(--amber)}
+
+.golden{margin:34px 0 0;background:linear-gradient(135deg,rgba(232,23,138,.1),transparent 60%);border:1px solid rgba(232,23,138,.35);border-radius:14px;padding:18px}
+.golden h2{font-size:16px;font-weight:800;margin-bottom:10px}
+.golden ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.golden li{font-size:13px;color:#dcdce0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.golden li b{color:var(--accent2)}
+
+.foot{margin:40px 0;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+
+@media print{
+  body{background:#fff;color:#111;overflow:visible}
+  header,.hbtns,.back{display:none!important}
+  .wrap{max-width:100%;padding:0}
+  .top{padding:0 0 6px}
+  h1{color:#111;font-size:24px}
+  .eyebrow{color:#e8178a}
+  .lead{color:#444;font-size:12.5px}
+  .note{background:#fff8e8;border-color:#e8c37a;color:#8a6d1a;font-size:11px}
+  .phase{margin:16px 0 0;break-inside:avoid}
+  .ph-head{border-color:#ddd}
+  .ph-head h2{color:#111;font-size:16px}
+  .ph-head .t{color:#888}
+  .cols{gap:8px}
+  .role{background:#fff;border:1.5px solid #bbb;border-radius:10px;padding:10px 12px;break-inside:avoid}
+  .role h3{color:#111;font-size:13px}
+  .role .who{color:#777}
+  .chk li{background:#fff;border:1px solid #ddd;color:#222;font-size:11px;padding:5px 8px;gap:8px}
+  .chk li b{color:#000}
+  .chk .box{border-color:#888}
+  .chk li .app{color:#c4126f;background:#fdeef6;border-color:#f2b8d8}
+  .chk li.key{border-color:#e8178a}
+  .regla{color:#666}.regla b{color:#a97b00}
+  .golden{background:#fdf3f8;border-color:#e8178a;padding:10px 12px;break-inside:avoid}
+  .golden h2{color:#111;font-size:13px}
+  .golden li{background:#fff;border-color:#ddd;color:#222;font-size:10.5px;padding:5px 8px}
+  .golden li b{color:#c4126f}
+  .foot{color:#999;font-size:9.5px;margin:14px 0 0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hbar">
+    <a class="logo" href="../"><span class="tile">V</span><span>VAM GARAGE<small>Rutinas del Taller</small></span></a>
+    <div class="hbtns">
+      <button class="btn primary" onclick="window.print()">⬇️ Descargar</button>
+      <a class="back" href="../">← Centro de Control</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="top">
+    <div class="eyebrow">Operación · rutina diaria por rol</div>
+    <h1>Qué hace cada quien al llegar y antes de irse</h1>
+    <p class="lead">La rutina fija del día: <b>apertura</b> (primeros 20 min), <b>durante el día</b> y <b>cierre</b> (últimos 20 min). Por <b>rol</b>, no por nombre — quien esté en el puesto, esto le toca.</p>
+    <div class="note">📝 <b>Borrador para afinar con el equipo:</b> imprímelo, pruébalo una semana y ajustamos lo que no encaje con la operación real. Va de la mano con la <a href="../herramientas/semana-capacitacion.html" style="color:inherit;text-decoration:underline">Semana de Capacitación</a> y el <a href="https://mackeyze-777.github.io/vam-garage-sops/" style="color:inherit;text-decoration:underline">Manual de Operaciones</a>.</div>
+  </div>
+
+  <!-- APERTURA -->
+  <section class="phase">
+    <div class="ph-head"><span class="ico">🌅</span><h2>Apertura — al llegar</h2><span class="t">Primeros 20 min</span></div>
+    <div class="cols">
+      <div class="role">
+        <h3>🔑 Encargado</h3>
+        <div class="who">Quien abre y coordina el día</div>
+        <ul class="chk">
+          <li><span class="box"></span><span>Abrir el taller: reja, luces, agua y compresor.</span></li>
+          <li class="key"><span class="box"></span><span><b>Revisar el Tablero del Taller</b>: qué carros entran hoy, a qué hora y para cuándo se entregan.<span class="app">Tablero</span></span></li>
+          <li><span class="box"></span><span>Revisar la <b>Vista de Semana</b>: cómo viene la carga y qué días hay espacio para vender.<span class="app">Semana</span></span></li>
+          <li><span class="box"></span><span>Contestar WhatsApp pendientes de anoche (leads y clientes) <b>antes de las 9:00</b>.</span></li>
+          <li><span class="box"></span><span>Asignar los trabajos del día al técnico en turno: qué carro, qué servicio, con qué SOP.</span></li>
+          <li><span class="box"></span><span>Imprimir o tener lista la <b>hoja de control</b> de cada trabajo del día.<span class="app">SOPs</span></span></li>
+        </ul>
+        <div class="regla">Si un cliente no llegó 30 min después de su cita → mensaje de "¿todo bien, vienes en camino?" desde la app de Citas.</div>
+      </div>
+      <div class="role">
+        <h3>🔧 Técnico en turno</h3>
+        <div class="who">Quien ejecuta los servicios</div>
+        <ul class="chk">
+          <li><span class="box"></span><span>Llegar puntual, con uniforme/playera del taller y presentación limpia.</span></li>
+          <li class="key"><span class="box"></span><span><b>Ver el Tablero</b>: qué carro te toca, a qué hora entra y abrir el <b>SOP del servicio</b> antes de empezar.<span class="app">Tablero</span></span></li>
+          <li><span class="box"></span><span>Preparar la estación: químicos diluidos y etiquetados (tabla de diluciones), microfibras limpias y separadas por uso.</span></li>
+          <li><span class="box"></span><span>Revisar máquinas y herramienta: pulidora, aspiradora, extensiones — que todo prenda y esté completo.</span></li>
+          <li><span class="box"></span><span>Revisar que haya agua, shampoo y consumibles para los trabajos del día; si algo falta, <b>avisar de inmediato</b> al encargado.</span></li>
+        </ul>
+        <div class="regla"><b>Regla de oro:</b> ningún carro se empieza sin hoja de control y sin haber leído el SOP de ese servicio.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DURANTE EL DÍA -->
+  <section class="phase">
+    <div class="ph-head"><span class="ico">☀️</span><h2>Durante el día</h2><span class="t">En cada trabajo</span></div>
+    <div class="cols">
+      <div class="role">
+        <h3>🔑 Encargado</h3>
+        <div class="who">Recepción, venta y control</div>
+        <ul class="chk">
+          <li class="key"><span class="box"></span><span><b>Cada carro que entra</b>: hoja de recepción con fotos, gasolina y daños — se manda al cliente antes de tocar el carro.<span class="app">Recepción</span></span></li>
+          <li><span class="box"></span><span>Cotizaciones al momento con la app (precio en vivo) y <b>ofrecer siempre el upsell</b> que marca el Playbook.<span class="app">Presupuestos</span></span></li>
+          <li><span class="box"></span><span>Anticipos y abonos → recibo como imagen al WhatsApp del cliente.<span class="app">Recibos</span></span></li>
+          <li><span class="box"></span><span>Inspección de calidad <b>antes</b> de avisar al cliente que su carro está listo (checklist del SOP: ✓ cómo se ve bien).</span></li>
+          <li><span class="box"></span><span><b>Cada entrega</b>: hoja de entrega + fotos + garantía 48 h; si fue cerámico, certificado y recordatorio de mantenimiento.<span class="app">Recepción</span></span></li>
+          <li><span class="box"></span><span>Pedir la reseña de Google en persona con la tarjeta NFC al entregar.</span></li>
+        </ul>
+      </div>
+      <div class="role">
+        <h3>🔧 Técnico en turno</h3>
+        <div class="who">Ejecución con el SOP</div>
+        <ul class="chk">
+          <li class="key"><span class="box"></span><span>Trabajar <b>por fases del SOP</b>, marcando la hoja de control fase por fase — no saltarse pasos.</span></li>
+          <li><span class="box"></span><span>Si aparece un daño o detalle no registrado en recepción → <b>parar y avisar</b> al encargado antes de seguir.</span></li>
+          <li><span class="box"></span><span>Si un trabajo se va a pasar de la hora estimada de entrega → avisar al encargado <b>en cuanto lo veas</b>, no al final.</span></li>
+          <li><span class="box"></span><span>Detectar oportunidades para el encargado: faros opacos, lluvia ácida, motor sucio (detectores del Playbook).</span></li>
+          <li><span class="box"></span><span>Entre trabajos: dejar la estación lista para el siguiente carro (piso seco, herramientas en su lugar).</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="phase">
+    <div class="ph-head"><span class="ico">🌙</span><h2>Cierre — antes de irse</h2><span class="t">Últimos 20 min</span></div>
+    <div class="cols">
+      <div class="role">
+        <h3>🔑 Encargado</h3>
+        <div class="who">Quien cierra y deja listo mañana</div>
+        <ul class="chk">
+          <li class="key"><span class="box"></span><span><b>Confirmar las citas de mañana</b> con el botón de la app ("un día antes").<span class="app">Citas</span></span></li>
+          <li><span class="box"></span><span>Carros que se quedan: bajo techo, cerrados, llaves guardadas en su lugar y anotado quién queda pendiente.</span></li>
+          <li><span class="box"></span><span>Registrar los gastos del día para no perderlos.<span class="app">Gastos</span></span></li>
+          <li><span class="box"></span><span>Ver el Tablero de mañana: ¿alcanzan materiales para los trabajos que entran? Si no, comprar hoy o a primera hora.</span></li>
+          <li><span class="box"></span><span>5 min de recompra: mandar 3 mensajes a clientes vencidos.<span class="app">Recompra</span></span></li>
+          <li><span class="box"></span><span>Cerrar: compresor y máquinas apagadas, agua cerrada, luces, reja con candado.</span></li>
+        </ul>
+      </div>
+      <div class="role">
+        <h3>🔧 Técnico en turno</h3>
+        <div class="who">Estación lista para mañana</div>
+        <ul class="chk">
+          <li class="key"><span class="box"></span><span><b>Lavar lo usado</b>: cubetas, aplicadores y microfibras del día — a secar, separadas por uso.</span></li>
+          <li><span class="box"></span><span>Máquinas limpias y guardadas; lo que usa batería, cargando.</span></li>
+          <li><span class="box"></span><span>Rellenar botes que quedaron bajos (según la tabla de diluciones) y avisar qué químico se está acabando.</span></li>
+          <li><span class="box"></span><span>Barrer y trapear el área de trabajo; basura afuera.</span></li>
+          <li><span class="box"></span><span>Entregar al encargado las hojas de control terminadas del día.</span></li>
+        </ul>
+        <div class="regla"><b>El taller se entrega como te gustaría encontrarlo:</b> el de mañana (aunque seas tú) empieza sin recoger lo de ayer.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGLAS DE SIEMPRE -->
+  <section class="golden">
+    <h2>⭐ Las reglas de siempre (aplican todo el día)</h2>
+    <ul>
+      <li><b>Sin hoja de control no se empieza</b> ningún carro.</li>
+      <li><b>Fotos siempre:</b> recepción y entrega, sin excepción.</li>
+      <li><b>Daño detectado = se avisa</b>, nunca se tapa. Los daños no se descuentan del sueldo; ocultarlos sí escala.</li>
+      <li><b>El cliente se entera por nosotros:</b> si algo se atrasa, se avisa antes de que pregunte.</li>
+      <li><b>Químicos etiquetados y diluidos</b> según la tabla — nunca al tanteo.</li>
+      <li><b>Nada sale sin inspección</b> de calidad del encargado.</li>
+    </ul>
+  </section>
+
+  <div class="foot">VAM Garage · Pachuca · Rutinas del taller por rol · Complementa: Manual de Operaciones (SOPs), Semana de Capacitación y Esquema del Equipo · Imprime con ⬇️ Descargar</div>
+</main>
+</body>
+</html>
