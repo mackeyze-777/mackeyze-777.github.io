@@ -43,6 +43,7 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
 .sm.busy b{color:var(--accent2)}
 
 .week{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0 40px}
+.week .loading,.week .err{grid-column:1/-1}
 .col{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;min-height:150px}
 .col.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
 .col.free{background:linear-gradient(180deg,rgba(39,199,111,.06),transparent)}
@@ -96,7 +97,7 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
   </div>
 
   <div class="summary" id="summary"></div>
-  <div id="board"><div class="loading">Cargando la agenda…</div></div>
+  <div id="board" class="week"><div class="loading">Cargando la agenda…</div></div>
   <div id="wknd"></div>
   <div class="upd" id="upd"></div>
 
