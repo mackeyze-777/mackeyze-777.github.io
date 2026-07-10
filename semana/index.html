@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Vista de Semana · VAM Garage</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e8178a'/><text x='50' y='72' font-size='64' font-family='system-ui' font-weight='900' text-anchor='middle' fill='%23050505'>V</text></svg>">
+<style>
+:root{--bg:#050505;--panel:#0c0c0c;--panel2:#131313;--line:#1e1e1e;--line2:#2c2c2c;--txt:#f0f0f0;--muted:#808490;--accent:#e8178a;--accent2:#ff4fae;--green:#27c76f;--amber:#f0a500;--red:#e04040;--blue:#4f9dff}
+*{box-sizing:border-box;margin:0;padding:0;min-width:0}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--accent2);outline-offset:2px;border-radius:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.wrap{max-width:1240px;margin:0 auto;padding:0 18px}
+
+header{position:sticky;top:0;z-index:20;background:rgba(5,5,5,.9);backdrop-filter:blur(12px);border-top:3px solid var(--accent);border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;gap:12px;height:56px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.5px;font-size:14px}
+.logo .tile{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#050505;font-weight:900}
+.logo small{display:block;color:var(--muted);font-weight:600;letter-spacing:1.5px;font-size:9px;text-transform:uppercase}
+.hbar .back{margin-left:auto;font-size:13px;color:var(--muted)}
+.hbar .back:hover{color:var(--txt)}
+
+.top{padding:26px 0 6px}
+.eyebrow{color:var(--accent2);font-weight:700;letter-spacing:2.5px;text-transform:uppercase;font-size:10.5px;margin-bottom:8px}
+h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-height:1.05}
+
+.nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
+.nav .range{font-size:16px;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;gap:6px;background:var(--panel2);border:1px solid var(--line2);color:var(--txt);border-radius:10px;padding:8px 14px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.btn:hover{border-color:var(--accent);background:var(--panel)}
+.btn.icon{padding:8px 12px;font-size:16px}
+.btn.ghost{background:transparent}
+.nav .spacer{margin-left:auto}
+
+.summary{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
+.sm{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 16px;min-width:120px}
+.sm b{display:block;font-size:22px;font-weight:900}
+.sm span{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.sm.free b{color:var(--green)}
+.sm.busy b{color:var(--accent2)}
+
+.week{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0 40px}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;min-height:150px}
+.col.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.col.free{background:linear-gradient(180deg,rgba(39,199,111,.06),transparent)}
+.chd{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.chd .dname{font-size:14px;font-weight:800;text-transform:capitalize}
+.chd .ddate{font-size:11px;color:var(--muted);font-weight:600}
+.chd.todaytag .dname{color:var(--accent2)}
+.cnt{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--panel2);border:1px solid var(--line2);color:var(--muted)}
+.cnt.has{background:rgba(232,23,138,.14);color:var(--accent2);border-color:rgba(232,23,138,.3)}
+.jobs{display:flex;flex-direction:column;gap:8px}
+.job{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 10px}
+.job .r1{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.job .h{font-size:12.5px;font-weight:800;color:var(--txt);white-space:nowrap}
+.job .dot{width:8px;height:8px;border-radius:50%;flex:none}
+.dot.conf{background:var(--green)}.dot.pend{background:var(--amber)}.dot.done{background:var(--blue)}.dot.canc{background:var(--red)}
+.job .veh{font-size:12px;color:var(--txt);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.job .svc{font-size:11px;color:var(--muted);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.job.canc{opacity:.5}.job.canc .veh{text-decoration:line-through}
+.free-msg{margin:auto 0;text-align:center;color:var(--green);font-weight:700;font-size:13.5px;padding:14px 0}
+.free-msg small{display:block;color:var(--muted);font-weight:500;font-size:11px;margin-top:3px}
+.wknd{margin:0 0 40px;background:var(--panel);border:1px dashed var(--line2);border-radius:14px;padding:14px 16px;font-size:13px;color:var(--muted)}
+.wknd b{color:var(--txt)}
+.upd{color:var(--muted);font-size:11.5px;margin:2px 0 30px}
+.err,.loading{padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--line2);border-radius:14px;margin:18px 0}
+.err{color:var(--red);border-color:rgba(224,64,64,.4)}
+.foot{margin:30px 0 40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media(max-width:540px){.nav .range{width:100%;order:-1;margin-bottom:4px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap hbar">
+    <a class="logo" href="../"><span class="tile">V</span><span>VAM GARAGE<small>Vista de Semana</small></span></a>
+    <a class="back" href="../">← Centro de Control</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="top">
+    <div class="eyebrow">Agenda de la semana · en vivo</div>
+    <h1>Mi semana de un vistazo</h1>
+  </div>
+
+  <div class="nav">
+    <button class="btn icon" id="prev" aria-label="Semana anterior">←</button>
+    <button class="btn ghost" id="today">Esta semana</button>
+    <button class="btn icon" id="next" aria-label="Semana siguiente">→</button>
+    <span class="range" id="range">…</span>
+    <span class="spacer"></span>
+    <button class="btn" id="reload">↻ Actualizar</button>
+  </div>
+
+  <div class="summary" id="summary"></div>
+  <div id="board"><div class="loading">Cargando la agenda…</div></div>
+  <div id="wknd"></div>
+  <div class="upd" id="upd"></div>
+
+  <div class="foot">VAM Garage · Pachuca · Vista de semana (L–V) desde la agenda en vivo · Sin teléfonos de clientes · Se refresca solo cada 5 min</div>
+</main>
+
+<script>
+const CSV='https://script.google.com/macros/s/AKfycbyzU9quKz-MBbbRAEOHpu0zTzmlqBfQ8UpWsQVnGzCAa3jDyOShMOA_VSD6JCYIqVc/exec';
+
+/* Nombres épicos + duración por servicio (mismo mapa que el Tablero) */
+const SVC_MAP=[
+ {re:/cer[aá]m.*(5|mohs)|5\s*a/i,epic:'TITÁN · Cerámico 5 años'},
+ {re:/2\s*pasos.*3|3\s*a[ñn]os.*2\s*p/i,epic:'ARMADURA+ · Cerámico 3 años'},
+ {re:/cer[aá]m.*3|3\s*a[ñn]os/i,epic:'ARMADURA · Cerámico 3 años'},
+ {re:/mate/i,epic:'ARMADURA MATE · Cerámico mate'},
+ {re:/2\s*pasos.*1\s*a|cer[aá]m.*2\s*pasos/i,epic:'ESCUDO+ · Cerámico 1 año'},
+ {re:/cer[aá]m/i,epic:'ESCUDO · Cerámico 1 año'},
+ {re:/correcci[oó]n|2\s*pasos/i,epic:'CIRUGÍA DE PINTURA · Corrección'},
+ {re:/pulido.*(encerado|cera)|encerado/i,epic:'EFECTO SHOWROOM · Pulido + Encerado'},
+ {re:/pulido/i,epic:'SHOWROOM EXPRESS · Pulido'},
+ {re:/interior.*(avanzad|profund)|vestidura.*avanzad/i,epic:'INTERIOR CERO KM · Vestiduras'},
+ {re:/interior|vestidura/i,epic:'INTERIOR FRESH · Vestiduras'},
+ {re:/paquete|\+.*\+/i,epic:'TRANSFORMACIÓN TOTAL · Paquete'},
+ {re:/motor/i,epic:'SALA DE MÁQUINAS · Motor'},
+ {re:/faro/i,epic:'VISIÓN NUEVA · Faros'},
+ {re:/lavado/i,epic:'LAVADO TÉCNICO'},
+ {re:/ppf|blindaje/i,epic:'BLINDAJE INVISIBLE · PPF'},
+ {re:/cera|descontaminaci/i,epic:'SELLO EXPRESS · Cera'},
+];
+function epicOf(s){for(const m of SVC_MAP){if(m.re.test(s||''))return m.epic;}return (s||'').trim()||'Servicio por confirmar';}
+
+function parseCSV(t){const rows=[];let row=[],cur='',q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){cur+='"';i++;}else q=false;}else cur+=c;}
+    else{if(c==='"')q=true;else if(c===','){row.push(cur);cur='';}
+      else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;row.push(cur);cur='';if(row.some(x=>x.trim()!==''))rows.push(row);row=[];}
+      else cur+=c;}}
+  if(cur!==''||row.length){row.push(cur);if(row.some(x=>x.trim()!==''))rows.push(row);}return rows;}
+function parseDate(s){const m=(s||'').trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);if(!m)return null;return {d:+m[1],mo:+m[2],y:+m[3]};}
+function parseHour(s){const m=(s||'').trim().toLowerCase().match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/);if(!m)return null;let h=+m[1],mi=+(m[2]||0);if(m[3]==='pm'&&h<12)h+=12;if(m[3]==='am'&&h===12)h=0;return h*60+mi;}
+function fmtHour(mins){if(mins==null)return '—';let h=Math.floor(mins/60),mi=Math.round(mins%60);const ap=h>=12?'pm':'am';h=h%12;if(h===0)h=12;return h+':'+String(mi).padStart(2,'0')+ap;}
+function keyOf(dt){return dt.getDate()+'/'+(dt.getMonth()+1)+'/'+dt.getFullYear();}
+function stCls(est){est=(est||'').toLowerCase();if(/cancel/.test(est))return['canc','Cancelada'];if(/complet|entregad/.test(est))return['done','Completada'];if(/confirm/.test(est))return['conf','Confirmada'];return['pend','Pendiente'];}
+
+let offset=0, cache=null;
+const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const DIAS=['Lunes','Martes','Miércoles','Jueves','Viernes'];
+
+function mondayOf(off){const n=new Date();n.setHours(0,0,0,0);const g=(n.getDay()+6)%7;n.setDate(n.getDate()-g+off*7);return n;}
+
+function render(){
+  const mon=mondayOf(offset);
+  const days=[...Array(5)].map((_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d;});
+  const fri=days[4];
+  document.getElementById('range').textContent=`${mon.getDate()} ${MES[mon.getMonth()]} — ${fri.getDate()} ${MES[fri.getMonth()]} ${fri.getFullYear()}`;
+  const board=document.getElementById('board');
+  if(!cache){board.innerHTML='<div class="loading">Cargando la agenda…</div>';return;}
+
+  // agrupar por día
+  const byKey={};
+  cache.forEach((r,i)=>{if(i===0)return;const f=parseDate(r[0]);if(!f)return;const k=f.d+'/'+f.mo+'/'+f.y;(byKey[k]=byKey[k]||[]).push(r);});
+  const tk=keyOf(new Date());
+  let totCitas=0, diasBusy=0;
+  let html='';
+  days.forEach((d,i)=>{
+    const k=keyOf(d);
+    const rows=(byKey[k]||[]).slice().sort((a,b)=>(parseHour(a[1])??9999)-(parseHour(b[1])??9999));
+    const active=rows.filter(r=>!/cancel/.test((r[8]||'').toLowerCase()));
+    totCitas+=active.length; if(active.length)diasBusy++;
+    const isToday=k===tk;
+    const free=active.length===0;
+    let inner;
+    if(!rows.length){
+      inner=`<div class="free-msg">✓ Disponible<small>Sin citas este día</small></div>`;
+    }else{
+      inner='<div class="jobs">'+rows.map(r=>{
+        const [cls]=stCls(r[8]);
+        const veh=[r[4],r[5],r[6]].filter(x=>(x||'').trim()).join(' ')||'Vehículo por confirmar';
+        const canc=cls==='canc';
+        return `<div class="job${canc?' canc':''}">
+          <div class="r1"><span class="dot ${cls}"></span><span class="h">${fmtHour(parseHour(r[1]))}</span><span class="veh">${veh}</span></div>
+          <div class="svc">${epicOf(r[7])}</div>
+        </div>`;
+      }).join('')+'</div>';
+    }
+    html+=`<div class="col${isToday?' today':''}${free?' free':''}">
+      <div class="chd${isToday?' todaytag':''}">
+        <div><div class="dname">${DIAS[i]}${isToday?' · hoy':''}</div><div class="ddate">${d.getDate()} ${MES[d.getMonth()]}</div></div>
+        <span class="cnt${active.length?' has':''}">${active.length||0}</span>
+      </div>${inner}</div>`;
+  });
+  board.innerHTML=html;
+
+  // resumen
+  const libres=5-diasBusy;
+  document.getElementById('summary').innerHTML=
+    `<div class="sm busy"><b>${totCitas}</b><span>Citas L–V</span></div>`+
+    `<div class="sm"><b>${diasBusy}</b><span>Días con citas</span></div>`+
+    `<div class="sm free"><b>${libres}</b><span>Días disponibles</span></div>`;
+
+  // fin de semana (para no ocultar citas)
+  const sat=new Date(mon);sat.setDate(mon.getDate()+5);const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+  const wk=(byKey[keyOf(sat)]||[]).concat(byKey[keyOf(sun)]||[]).filter(r=>!/cancel/.test((r[8]||'').toLowerCase()));
+  document.getElementById('wknd').innerHTML= wk.length?
+    `<div class="wknd">📌 Además esta semana hay <b>${wk.length} cita${wk.length===1?'':'s'}</b> en fin de semana (sáb ${sat.getDate()} / dom ${sun.getDate()}). Ábrelas en la <a href="../#sheets" style="color:var(--accent2)">Hoja de Citas</a>.</div>`:'';
+}
+
+async function load(){
+  try{
+    const res=await fetch(CSV+(CSV.includes('?')?'&':'?')+'t='+Date.now());
+    cache=parseCSV(await res.text());
+    render();
+    document.getElementById('upd').textContent='Actualizado: '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})+' · se refresca solo cada 5 min';
+  }catch(e){
+    document.getElementById('board').innerHTML=`<div class="err">No pude leer la agenda. Revisa el internet y toca ↻ Actualizar.<br><small>${e}</small></div>`;
+  }
+}
+document.getElementById('prev').onclick=()=>{offset--;render();};
+document.getElementById('next').onclick=()=>{offset++;render();};
+document.getElementById('today').onclick=()=>{offset=0;render();};
+document.getElementById('reload').onclick=load;
+render(); load(); setInterval(load,5*60*1000);
+</script>
+</body>
+</html>
