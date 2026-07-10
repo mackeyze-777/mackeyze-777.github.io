@@ -14,9 +14,9 @@
   --accent:#e8178a; --accent2:#ff4fae;
   --green:#27c76f; --amber:#f0a500; --wa:#25d366;
 }
-*{box-sizing:border-box;margin:0;padding:0}
+*{box-sizing:border-box;margin:0;padding:0;min-width:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:clip}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--accent2);outline-offset:3px;border-radius:8px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
@@ -54,7 +54,7 @@ section{margin-top:38px;scroll-margin-top:130px}
 .sec-head .count{margin-left:auto;color:var(--muted);font-size:12px;font-weight:600}
 .sec-sub{color:var(--muted);font-size:13px;margin-top:-8px;margin-bottom:16px}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px}
 .card{position:relative;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;transition:transform .18s ease-out,background .18s ease,border-color .18s ease}
 .card:hover{border-color:var(--accent);transform:translateY(-3px);background:var(--panel2)}
 .card:focus-within{border-color:var(--accent);background:var(--panel2)}
@@ -105,7 +105,7 @@ footer b{color:var(--txt)}
     <div class="stats">
       <div class="stat"><b>11</b><span>Apps en vivo</span></div>
       <div class="stat"><b>7</b><span>Páginas web</span></div>
-      <div class="stat"><b>6</b><span>Herramientas</span></div>
+      <div class="stat"><b>5</b><span>Herramientas</span></div>
       <div class="stat"><b>6</b><span>Documentos</span></div>
       <div class="stat"><b>$0</b><span>Costo / mes</span></div>
     </div>
@@ -293,7 +293,7 @@ footer b{color:var(--txt)}
 
   <!-- HERRAMIENTAS -->
   <section id="herramientas">
-    <div class="sec-head"><span class="dot"></span><h2>Herramientas</h2><span class="count">6 herramientas</span></div>
+    <div class="sec-head"><span class="dot"></span><h2>Herramientas</h2><span class="count">5 herramientas</span></div>
     <div class="sec-sub">Herramientas de taller que antes solo existían en tu computadora — ahora publicadas aquí.</div>
     <div class="grid">
 
