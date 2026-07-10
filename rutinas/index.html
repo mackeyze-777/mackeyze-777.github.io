@@ -51,6 +51,10 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
 .regla{margin-top:12px;font-size:12px;color:var(--muted);border-top:1px dashed var(--line2);padding-top:10px}
 .regla b{color:var(--amber)}
 
+.cols.m5{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.role .dia{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent2);background:rgba(232,23,138,.1);border:1px solid rgba(232,23,138,.25);border-radius:6px;padding:2px 8px;margin-bottom:8px}
+.mrule{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:13px;color:#dcdce0}
+.mrule b{color:var(--amber)}
 .golden{margin:34px 0 0;background:linear-gradient(135deg,rgba(232,23,138,.1),transparent 60%);border:1px solid rgba(232,23,138,.35);border-radius:14px;padding:18px}
 .golden h2{font-size:16px;font-weight:800;margin-bottom:10px}
 .golden ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
@@ -82,6 +86,10 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
   .chk li .app{color:#c4126f;background:#fdeef6;border-color:#f2b8d8}
   .chk li.key{border-color:#e8178a}
   .regla{color:#666}.regla b{color:#a97b00}
+  .cols.m5{grid-template-columns:repeat(3,1fr)}
+  .role .dia{color:#c4126f;background:#fdeef6;border-color:#f2b8d8}
+  .mrule{background:#fff;border-color:#ddd;color:#333;font-size:10px;padding:6px 10px}
+  .mrule b{color:#a97b00}
   .golden{background:#fdf3f8;border-color:#e8178a;padding:10px 12px;break-inside:avoid}
   .golden h2{color:#111;font-size:13px}
   .golden li{background:#fff;border-color:#ddd;color:#222;font-size:10.5px;padding:5px 8px}
@@ -202,6 +210,59 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
     </div>
   </section>
 
+  <!-- MANTENIMIENTO DEL TALLER -->
+  <section class="phase">
+    <div class="ph-head"><span class="ico">🧹</span><h2>Mantenimiento del taller — cada día toca algo</h2><span class="t">15 min al cierre</span></div>
+    <div class="cols m5">
+      <div class="role">
+        <span class="dia">Lunes</span>
+        <h3>🚻 Baños</h3>
+        <ul class="chk">
+          <li><span class="box"></span><span>Taza, lavabo y espejo limpios.</span></li>
+          <li><span class="box"></span><span>Bote vacío, con bolsa nueva.</span></li>
+          <li><span class="box"></span><span>Papel y jabón repuestos.</span></li>
+        </ul>
+      </div>
+      <div class="role">
+        <span class="dia">Martes</span>
+        <h3>🧴 Atomizadores</h3>
+        <ul class="chk">
+          <li><span class="box"></span><span><b>Todos llenos</b>, diluidos según la tabla.</span></li>
+          <li><span class="box"></span><span>Etiquetas legibles; si no, se re-etiqueta.</span></li>
+          <li><span class="box"></span><span>Disparador que falla → se cambia.</span></li>
+        </ul>
+      </div>
+      <div class="role">
+        <span class="dia">Miércoles</span>
+        <h3>🧺 Microfibras</h3>
+        <ul class="chk">
+          <li><span class="box"></span><span>Lavar TODAS las usadas de la semana.</span></li>
+          <li><span class="box"></span><span>Separadas por uso al secar.</span></li>
+          <li><span class="box"></span><span>Las gastadas → a ruedas/motor, o se tiran.</span></li>
+        </ul>
+      </div>
+      <div class="role">
+        <span class="dia">Jueves</span>
+        <h3>🧽 Piso y estantes</h3>
+        <ul class="chk">
+          <li><span class="box"></span><span>Barrer y trapear <b>todo el taller</b>, no solo tu estación.</span></li>
+          <li><span class="box"></span><span>Telarañas y rincones.</span></li>
+          <li><span class="box"></span><span>Mesas y estantes ordenados.</span></li>
+        </ul>
+      </div>
+      <div class="role">
+        <span class="dia">Viernes</span>
+        <h3>⚙️ Máquinas y bodega</h3>
+        <ul class="chk">
+          <li><span class="box"></span><span>Pulidoras limpias, pads revisados.</span></li>
+          <li><span class="box"></span><span>Aspiradora: vaciar y limpiar filtro.</span></li>
+          <li><span class="box"></span><span>Lista de químicos por comprar → al encargado.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mrule"><b>La regla para que sí pase:</b> el mantenimiento del día lo hace el <b>técnico en turno</b> dentro del cierre — cuenta como trabajo, igual que un carro; no es favor ni castigo. Si hay más de una persona, <b>se alternan los días</b>. El encargado lo revisa con un vistazo antes de cerrar: si tocaba y no se hizo, <b>se hace antes de irse</b>. 🗓️ <b>Primer sábado del mes</b> (30–45 min, entre todos): lavar botes y cubetas a fondo, inventario de químicos, revisar cables y extensiones, acomodo general.</div>
+  </section>
+
   <!-- REGLAS DE SIEMPRE -->
   <section class="golden">
     <h2>⭐ Las reglas de siempre (aplican todo el día)</h2>
@@ -217,5 +278,8 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
 
   <div class="foot">VAM Garage · Pachuca · Rutinas del taller por rol · Complementa: Manual de Operaciones (SOPs), Semana de Capacitación y Esquema del Equipo · Imprime con ⬇️ Descargar</div>
 </main>
+<!-- Botón flotante: volver al Centro de Control -->
+<style>.vam-home{position:fixed;left:12px;bottom:12px;z-index:99990;display:flex;align-items:center;gap:8px;background:rgba(12,12,12,.94);border:1px solid #2c2c2c;border-radius:999px;padding:5px 14px 5px 5px;text-decoration:none;box-shadow:0 4px 16px rgba(0,0,0,.5);backdrop-filter:blur(8px);transition:border-color .15s ease}.vam-home:hover{border-color:#e8178a}.vam-home:focus-visible{outline:2px solid #ff4fae;outline-offset:2px}.vam-home .vt{flex:none;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#e8178a,#ff4fae);color:#050505;font:900 17px/34px system-ui,sans-serif;text-align:center}.vam-home .vl{color:#f0f0f0;font:600 12.5px/1.1 system-ui,sans-serif;white-space:nowrap}@media(max-width:520px){.vam-home .vl{display:none}.vam-home{padding:5px}}@media print{.vam-home{display:none!important}}</style>
+<a class="vam-home" href="../" aria-label="Volver al Centro de Control"><span class="vt">V</span><span class="vl">Centro de Control</span></a>
 </body>
 </html>
