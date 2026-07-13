@@ -42,7 +42,7 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
 .sm.free b{color:var(--green)}
 .sm.busy b{color:var(--accent2)}
 
-.week{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:18px 0 40px}
+.week{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:18px 0 40px}
 .week .loading,.week .err{grid-column:1/-1}
 .col{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;min-height:150px}
 .col.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
@@ -101,7 +101,7 @@ h1{font-size:clamp(24px,4vw,34px);font-weight:900;letter-spacing:-.5px;line-heig
   <div id="wknd"></div>
   <div class="upd" id="upd"></div>
 
-  <div class="foot">VAM Garage · Pachuca · Vista de semana (L–V) desde la agenda en vivo · Sin teléfonos de clientes · Se refresca solo cada 5 min</div>
+  <div class="foot">VAM Garage · Pachuca · Vista de semana (L–S) desde la agenda en vivo · Sin teléfonos de clientes · Se refresca solo cada 5 min</div>
 </main>
 
 <script>
@@ -144,15 +144,15 @@ function stCls(est){est=(est||'').toLowerCase();if(/cancel/.test(est))return['ca
 
 let offset=0, cache=null;
 const MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-const DIAS=['Lunes','Martes','Miércoles','Jueves','Viernes'];
+const DIAS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 
 function mondayOf(off){const n=new Date();n.setHours(0,0,0,0);const g=(n.getDay()+6)%7;n.setDate(n.getDate()-g+off*7);return n;}
 
 function render(){
   const mon=mondayOf(offset);
-  const days=[...Array(5)].map((_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d;});
-  const fri=days[4];
-  document.getElementById('range').textContent=`${mon.getDate()} ${MES[mon.getMonth()]} — ${fri.getDate()} ${MES[fri.getMonth()]} ${fri.getFullYear()}`;
+  const days=[...Array(6)].map((_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d;});
+  const sab=days[5];
+  document.getElementById('range').textContent=`${mon.getDate()} ${MES[mon.getMonth()]} — ${sab.getDate()} ${MES[sab.getMonth()]} ${sab.getFullYear()}`;
   const board=document.getElementById('board');
   if(!cache){board.innerHTML='<div class="loading">Cargando la agenda…</div>';return;}
 
@@ -192,17 +192,17 @@ function render(){
   board.innerHTML=html;
 
   // resumen
-  const libres=5-diasBusy;
+  const libres=6-diasBusy;
   document.getElementById('summary').innerHTML=
-    `<div class="sm busy"><b>${totCitas}</b><span>Citas L–V</span></div>`+
+    `<div class="sm busy"><b>${totCitas}</b><span>Citas L–S</span></div>`+
     `<div class="sm"><b>${diasBusy}</b><span>Días con citas</span></div>`+
     `<div class="sm free"><b>${libres}</b><span>Días disponibles</span></div>`;
 
-  // fin de semana (para no ocultar citas)
-  const sat=new Date(mon);sat.setDate(mon.getDate()+5);const sun=new Date(mon);sun.setDate(mon.getDate()+6);
-  const wk=(byKey[keyOf(sat)]||[]).concat(byKey[keyOf(sun)]||[]).filter(r=>!/cancel/.test((r[8]||'').toLowerCase()));
+  // domingo (para no ocultar citas)
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+  const wk=(byKey[keyOf(sun)]||[]).filter(r=>!/cancel/.test((r[8]||'').toLowerCase()));
   document.getElementById('wknd').innerHTML= wk.length?
-    `<div class="wknd">📌 Además esta semana hay <b>${wk.length} cita${wk.length===1?'':'s'}</b> en fin de semana (sáb ${sat.getDate()} / dom ${sun.getDate()}). Ábrelas en la <a href="../#sheets" style="color:var(--accent2)">Hoja de Citas</a>.</div>`:'';
+    `<div class="wknd">📌 Además esta semana hay <b>${wk.length} cita${wk.length===1?'':'s'}</b> el domingo ${sun.getDate()}. Ábrelas en la <a href="../#sheets" style="color:var(--accent2)">Hoja de Citas</a>.</div>`:'';
 }
 
 async function load(){
